@@ -17,14 +17,28 @@
 ## 📦 Project Structure (Planned)
 
 ```
-kumpun
-├── core/                 # Core routing + validation engine
-├── cli/                  # CLI commands: kumpun dev, kumpun docs
-├── examples/             # Example apps and usage
-├── schemas/              # JSON schema definitions
-├── README.md
-├── Cargo.toml
-└── LICENSE
+kumpun-framework/
+├── @kumpun/                      # Kumpun Monorepo Crates
+│   ├── core/                     # 🧠 Core routing, validation, type-safe handler mapping
+│   ├── cli/                      # 🛠️ CLI: kumpun dev, check, generate, docs
+│   ├── schema/                   # 📚 Rust crate: JSON Schema loader, validator, type-gen utils
+│   └── Cargo.toml                # 🗂️ Workspace manifest
+│
+├── schemas/                      # 📄 Pure JSON Schema files (used by all languages/tools)
+│   ├── user/
+│   │   ├── create.json
+│   │   └── login.json
+│   ├── post/
+│   │   └── update.json
+│   └── index.json                # (optional) registry or schema manifest
+│
+├── examples/                     # 📦 Example apps using Kumpun CLI + core
+│   ├── minimal-api/
+│   └── ts-client-integration/
+│
+├── .gitignore
+├── LICENSE
+└── README.md
 ```
 
 ---
