@@ -1,0 +1,97 @@
+{
+  "$id": "everything.example",
+  "type": "object",
+  "title": "EverythingExample",
+  "description": "A schema to test every supported JSON Schema feature for Rust struct generation.",
+  "required": ["id", "profile", "tags", "status", "meta"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "age": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "isActive": {
+      "type": "boolean"
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "profile": {
+      "type": "object",
+      "required": ["firstName", "lastName"],
+      "properties": {
+        "firstName": { "type": "string" },
+        "lastName": { "type": "string" },
+        "address": {
+          "type": "object",
+          "properties": {
+            "line1": { "type": "string" },
+            "line2": { "type": "string" },
+            "zip": { "type": "string" }
+          }
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "inactive", "banned"]
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "preferences": {
+      "type": "object",
+      "oneOf": [
+        {
+          "title": "EmailOnly",
+          "type": "object",
+          "properties": {
+            "email": { "type": "string", "format": "email" }
+          },
+          "required": ["email"]
+        },
+        {
+          "title": "SMSOnly",
+          "type": "object",
+          "properties": {
+            "phone": { "type": "string" }
+          },
+          "required": ["phone"]
+        }
+      ]
+    },
+    "settings": {
+      "type": "object",
+      "allOf": [
+        {
+          "properties": {
+            "theme": { "type": "string" }
+          }
+        },
+        {
+          "properties": {
+            "notifications": { "type": "boolean" }
+          }
+        }
+      ]
+    },
+    "refExample": {
+      "$ref": "#/definitions/NestedRef"
+    }
+  },
+  "definitions": {
+    "NestedRef": {
+      "type": "object",
+      "properties": {
+        "note": { "type": "string" }
+      }
+    }
+  }
+}

@@ -100,10 +100,7 @@ fn extract_struct_recursive(
     for (key, prop) in properties.as_object().unwrap() {
         let field_name = key.as_str();
         let is_required = required.contains(field_name);
-        let rust_type = match infer_rust_type(prop, field_name, output, visited, definitions) {
-            Some(t) => t,
-            None => "serde_json::Value".to_string(),
-        };
+        let rust_type = infer_rust_type(prop, field_name, output, visited, definitions).unwrap_or_else(|| "serde_json::Value".to_string());
 
         let final_type = if is_required {
             rust_type
@@ -199,7 +196,7 @@ fn infer_rust_type(
     }
 }
 
-fn to_pascal_case(name: &str) -> String {
+pub fn to_pascal_case(name: &str) -> String {
     name.split(|c: char| c == '_' || c == '.' || c == '-')
         .map(|s| {
             let mut c = s.chars();

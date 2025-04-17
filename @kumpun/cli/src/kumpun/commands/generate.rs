@@ -1,6 +1,7 @@
 pub mod schema_to_rust;
 
 use schema_to_rust::generate_rust_structs_from_schema;
+use schema_to_rust::to_pascal_case;
 use std::fs;
 use std::io::Write;
 use std::path::{Path, PathBuf};
@@ -83,16 +84,4 @@ fn generate_rust_stub(schema_name: &str, schema_str: &str, out_dir: &str) {
 
     // 5. เขียนลงไฟล์
     write_to_file(schema_name, "rs", &full_code, out_dir);
-}
-
-fn to_pascal_case(name: &str) -> String {
-    name.split('.')
-        .map(|s| {
-            let mut c = s.chars();
-            match c.next() {
-                None => String::new(),
-                Some(f) => f.to_uppercase().collect::<String>() + c.as_str(),
-            }
-        })
-        .collect()
 }

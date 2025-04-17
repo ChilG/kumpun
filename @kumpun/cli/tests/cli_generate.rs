@@ -6,12 +6,12 @@ use std::fs;
 fn test_generate_rust_struct_from_schema() {
     // 1. เตรียมไฟล์ schema fixture
     let test_schema = r#"{
-    "type": "object",
-    "properties": {
-        "email": { "type": "string" },
-        "password": { "type": "string" }
-    },
-    "required": ["email"]
+  "type": "object",
+  "properties": {
+    "email": { "type": "string" },
+    "password": { "type": "string" }
+  },
+  "required": ["email"]
 }"#;
 
     let schema_path = "tests/fixtures/schemas/user.login.json";
