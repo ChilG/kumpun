@@ -1,13 +1,19 @@
+pub mod schema_to_rust;
+
+use serde_json::Value;
 use std::fs;
-use std::path::{Path, PathBuf};
 use std::io::Write;
+use std::path::{Path, PathBuf};
 
 pub fn init() {
     println!("🛠️ [generate] stub generator module initialized");
 }
 
 pub fn run(schema: &str, target: &str, schema_dir: &str, out_dir: &str) {
-    println!("🛠️ Generating for schema: '{}', target: '{}'", schema, target);
+    println!(
+        "🛠️ Generating for schema: '{}', target: '{}'",
+        schema, target
+    );
 
     let schema_path = build_schema_path(schema_dir, schema);
     if !schema_path.exists() {
@@ -58,13 +64,13 @@ fn generate_typescript_stub(schema_name: &str, _schema: &str, out_dir: &str) {
     write_to_file(schema_name, "ts", &interface, out_dir);
 }
 
-fn generate_rust_stub(schema_name: &str, _schema: &str, out_dir: &str) {
-    let rust_struct = format!(
-        "// Auto-generated from schema: {}\npub struct {} {{\n    // TODO: parse from schema\n}}\n",
-        schema_name,
-        to_pascal_case(schema_name)
-    );
-    write_to_file(schema_name, "rs", &rust_struct, out_dir);
+fn generate_rust_stub(schema_name: &str, schema_json: &str, out_dir: &str) {
+    let schema: Value = serde_json::from_str(schema_json).expect("Invalid JSON schema");
+
+    let struct_code = extract_struct(&schema, &to_pascal_case(schema_name))
+        .unwrap_or_else(|| "// Failed to generate struct".to_string());
+
+    write_to_file(schema_name, "rs", &struct_code, out_dir);
 }
 
 fn to_pascal_case(name: &str) -> String {
@@ -77,4 +83,41 @@ fn to_pascal_case(name: &str) -> String {
             }
         })
         .collect()
+}
+
+fn extract_struct(schema: &Value, struct_name: &str) -> Option<String> {
+    let body = schema.get("properties")?.get("body")?.get("properties")?;
+    let required_fields = schema
+        .get("properties")?
+        .get("body")?
+        .get("required")
+        .and_then(|v| v.as_array())
+        .map(|arr| arr.iter().filter_map(|s| s.as_str()).collect::<Vec<_>>())
+        .unwrap_or_default();
+
+    let mut fields = vec![];
+    for (key, value) in body.as_object()? {
+        let rust_type = match value.get("type")?.as_str()? {
+            "string" => "String",
+            "integer" => "i32",
+            "number" => "f64",
+            "boolean" => "bool",
+            _ => "serde_json::Value",
+        };
+
+        let is_required = required_fields.contains(&key.as_str());
+        let field_type = if is_required {
+            rust_type.to_string()
+        } else {
+            format!("Option<{}>", rust_type)
+        };
+
+        fields.push(format!("    pub {}: {},", key, field_type));
+    }
+
+    Some(format!(
+        "#[derive(Debug, Serialize, Deserialize)]\npub struct {} {{\n{}\n}}",
+        struct_name,
+        fields.join("\n")
+    ))
 }
