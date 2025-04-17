@@ -1,0 +1,8 @@
+[package]
+name = "kumpun-cli"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+kumpun-core = { path = "../core" }
+kumpun-schemas = { path = "../schemas" }
