@@ -73,7 +73,7 @@ fn extract_struct_recursive(
     schema: &Value,
     output: &mut Vec<NamedStruct>,
     visited: &mut HashSet<String>,
-    path: String,
+    _path: String,
     definitions: &Value,
 ) {
     if visited.contains(name) {

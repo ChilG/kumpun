@@ -8,17 +8,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="07f3844c-b908-4138-89c2-b79add2c64e8" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/@kumpun/cli/tests/cli_generate.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/generate.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/generate.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/generate/schema_to_rust.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/generate/schema_to_rust.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/@kumpun/Cargo.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/@kumpun/cli/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/Cargo.toml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="RsBuildProfile:dev" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="RsBuildProfile:test" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -51,6 +51,7 @@
   &quot;keyToString&quot;: {
     &quot;Cargo.Build `Run kumpun-cli generate`.executor&quot;: &quot;Run&quot;,
     &quot;Cargo.Build `Run kumpun-cli`.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Build `Test test_generate_rust_struct_from_schema`.executor&quot;: &quot;Run&quot;,
     &quot;Cargo.Build kumpun_core.executor&quot;: &quot;Run&quot;,
     &quot;Cargo.Build kumpun_schema.executor&quot;: &quot;Run&quot;,
     &quot;Cargo.Install cargo-llvm-cov.executor&quot;: &quot;Run&quot;,
@@ -60,6 +61,7 @@
     &quot;Cargo.Run kumpun-cli run.executor&quot;: &quot;Run&quot;,
     &quot;Cargo.Run kumpun-cli.executor&quot;: &quot;Run&quot;,
     &quot;Cargo.Test cli_integration.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Test test_generate_rust_struct_from_schema.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.rust.reset.selective.auto.import&quot;: &quot;true&quot;,
@@ -110,7 +112,7 @@
   <component name="RsExternalLinterProjectSettings">
     <option name="runOnTheFly" value="true" />
   </component>
-  <component name="RunManager" selected="Cargo.Run kumpun-cli">
+  <component name="RunManager" selected="Cargo.Test test_generate_rust_struct_from_schema">
     <configuration name="Build kumpun_core" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
       <option name="command" value="build --package kumpun-core --lib" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$/@kumpun" />
@@ -146,7 +148,26 @@
       </method>
     </configuration>
     <configuration name="Run kumpun-cli" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="buildProfileId" value="dev" />
       <option name="command" value="run --package kumpun-cli --bin kumpun-cli" />
+      <option name="workingDirectory" value="file://$PROJECT_DIR$/@kumpun" />
+      <envs />
+      <option name="emulateTerminal" value="true" />
+      <option name="channel" value="DEFAULT" />
+      <option name="requiredFeatures" value="true" />
+      <option name="allFeatures" value="false" />
+      <option name="withSudo" value="false" />
+      <option name="buildTarget" value="REMOTE" />
+      <option name="backtrace" value="SHORT" />
+      <option name="isRedirectInput" value="false" />
+      <option name="redirectInputPath" value="" />
+      <method v="2">
+        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Test test_generate_rust_struct_from_schema" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="buildProfileId" value="test" />
+      <option name="command" value="test --package kumpun-cli --test cli_generate test_generate_rust_struct_from_schema -- --exact" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$/@kumpun" />
       <envs />
       <option name="emulateTerminal" value="true" />
@@ -180,16 +201,17 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Cargo.Test test_generate_rust_struct_from_schema" />
       <item itemvalue="Cargo.Build kumpun_core" />
       <item itemvalue="Cargo.Build kumpun_schema" />
       <item itemvalue="Cargo.Run kumpun-cli" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Cargo.Test test_generate_rust_struct_from_schema" />
         <item itemvalue="Cargo.Run kumpun-cli" />
         <item itemvalue="Cargo.Build kumpun_schema" />
         <item itemvalue="Cargo.Build kumpun_core" />
-        <item itemvalue="Cargo.Run kumpun-cli" />
         <item itemvalue="Cargo.Run kumpun-cli" />
       </list>
     </recent_temporary>
@@ -208,7 +230,7 @@
       <workItem from="1744887457253" duration="436000" />
       <workItem from="1744888158713" duration="899000" />
       <workItem from="1744889077245" duration="735000" />
-      <workItem from="1744890239224" duration="15988000" />
+      <workItem from="1744890239224" duration="16788000" />
     </task>
     <servers />
   </component>
