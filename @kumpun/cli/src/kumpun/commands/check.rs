@@ -1,5 +1,5 @@
 pub fn init() {
-    // println!("✅ [check] module initialized");
+    println!("✅ [check] module initialized");
 }
 
 pub fn run() {

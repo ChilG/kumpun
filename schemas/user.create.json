@@ -1,0 +1,21 @@
+{
+  "$id": "user.create",
+  "type": "object",
+  "properties": {
+    "body": {
+      "type": "object",
+      "required": ["email", "password"],
+      "properties": {
+        "email": { "type": "string", "format": "email" },
+        "password": { "type": "string", "minLength": 8 }
+      }
+    },
+    "response": {
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" }
+      }
+    }
+  },
+  "required": ["body", "response"]
+}

@@ -1,5 +1,5 @@
 pub fn init() {
-    // println!("🚀 [dev] mock server module initialized");
+    println!("🚀 [dev] mock server module initialized");
 }
 
 pub fn run() {

@@ -1,22 +1,20 @@
 use std::fs;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use std::io::Write;
 
 pub fn init() {
-    // println!("🛠️ [generate] stub generator module initialized");
+    println!("🛠️ [generate] stub generator module initialized");
 }
 
-pub fn run(schema: &str, target: &str) {
+pub fn run(schema: &str, target: &str, schema_dir: &str, out_dir: &str) {
     println!("🛠️ Generating for schema: '{}', target: '{}'", schema, target);
 
-    // 1. Build input path
-    let schema_path = format!("schema/{}.json", schema);
-    if !Path::new(&schema_path).exists() {
-        eprintln!("❌ Schema file not found: {}", schema_path);
+    let schema_path = build_schema_path(schema_dir, schema);
+    if !schema_path.exists() {
+        eprintln!("❌ Schema file not found: {}", schema_path.display());
         std::process::exit(1);
     }
 
-    // 2. Read schema content
     let schema_str = match fs::read_to_string(&schema_path) {
         Ok(content) => content,
         Err(e) => {
@@ -25,10 +23,9 @@ pub fn run(schema: &str, target: &str) {
         }
     };
 
-    // 3. Generate stub
     match target {
-        "typescript" => generate_typescript_stub(&schema, &schema_str),
-        "rust" => generate_rust_stub(&schema, &schema_str),
+        "typescript" => generate_typescript_stub(schema, &schema_str, out_dir),
+        "rust" => generate_rust_stub(schema, &schema_str, out_dir),
         _ => {
             eprintln!("❌ Unsupported target: {}", target);
             std::process::exit(1);
@@ -36,35 +33,38 @@ pub fn run(schema: &str, target: &str) {
     }
 }
 
-fn generate_typescript_stub(schema_name: &str, schema: &str) {
-    let interface = format!(
-        "// Auto-generated from schema: {}\nexport interface {} {{\n  // TODO: parse from schema\n}}\n",
-        schema_name,
-        to_pascal_case(schema_name)
-    );
-
-    write_to_file(schema_name, "ts", &interface);
+fn build_schema_path(schema_dir: &str, schema: &str) -> PathBuf {
+    let root = std::env::current_dir().expect("Failed to get current dir");
+    root.join(schema_dir).join(format!("{}.json", schema))
 }
 
-fn generate_rust_stub(schema_name: &str, schema: &str) {
-    let rust_struct = format!(
-        "// Auto-generated from schema: {}\npub struct {} {{\n    // TODO: parse from schema\n}}\n",
-        schema_name,
-        to_pascal_case(schema_name)
-    );
-
-    write_to_file(schema_name, "rs", &rust_struct);
-}
-
-fn write_to_file(schema_name: &str, ext: &str, content: &str) {
-    let out_path = format!("generated/{}.{}", schema_name, ext);
-    let parent = Path::new(&out_path).parent().unwrap();
+fn write_to_file(schema_name: &str, ext: &str, content: &str, out_dir: &str) {
+    let out_path = Path::new(out_dir).join(format!("{}.{}", schema_name, ext));
+    let parent = out_path.parent().unwrap();
     fs::create_dir_all(parent).expect("Failed to create output dir");
 
     let mut file = fs::File::create(&out_path).expect("Failed to write file");
     file.write_all(content.as_bytes()).expect("Write failed");
 
-    println!("✅ Stub generated: {}", out_path);
+    println!("✅ Stub generated: {}", out_path.display());
+}
+
+fn generate_typescript_stub(schema_name: &str, _schema: &str, out_dir: &str) {
+    let interface = format!(
+        "// Auto-generated from schema: {}\nexport interface {} {{\n  // TODO: parse from schema\n}}\n",
+        schema_name,
+        to_pascal_case(schema_name)
+    );
+    write_to_file(schema_name, "ts", &interface, out_dir);
+}
+
+fn generate_rust_stub(schema_name: &str, _schema: &str, out_dir: &str) {
+    let rust_struct = format!(
+        "// Auto-generated from schema: {}\npub struct {} {{\n    // TODO: parse from schema\n}}\n",
+        schema_name,
+        to_pascal_case(schema_name)
+    );
+    write_to_file(schema_name, "rs", &rust_struct, out_dir);
 }
 
 fn to_pascal_case(name: &str) -> String {

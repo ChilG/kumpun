@@ -16,7 +16,14 @@ pub enum Commands {
     Generate {
         #[arg(short, long)]
         schema: String,
+
         #[arg(short, long, default_value = "rust")]
         target: String,
+
+        #[arg(long, default_value = "schemas")]
+        schema_dir: String,
+
+        #[arg(long, default_value = "generated")]
+        out_dir: String,
     },
 }
