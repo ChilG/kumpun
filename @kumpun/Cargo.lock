@@ -156,18 +156,18 @@ dependencies = [
  "assert_cmd",
  "clap",
  "kumpun-core",
- "kumpun-schemas",
+ "kumpun-schema",
 ]
 
 [[package]]
 name = "kumpun-core"
 version = "0.1.0"
 dependencies = [
- "kumpun-schemas",
+ "kumpun-schema",
 ]
 
 [[package]]
-name = "kumpun-schemas"
+name = "kumpun-schema"
 version = "0.1.0"
 
 [[package]]

@@ -10,7 +10,7 @@ pub fn run(schema: &str, target: &str) {
     println!("🛠️ Generating for schema: '{}', target: '{}'", schema, target);
 
     // 1. Build input path
-    let schema_path = format!("schemas/{}.json", schema);
+    let schema_path = format!("schema/{}.json", schema);
     if !Path::new(&schema_path).exists() {
         eprintln!("❌ Schema file not found: {}", schema_path);
         std::process::exit(1);

@@ -7,7 +7,7 @@
 ## ✨ Features
 
 - ✅ **Schema-First**: Define your input/output using JSON Schema
-- ⚡ **Rust Core**: High-performance validation and dispatch
+- ⚡  **Rust Core**: High-performance validation and dispatch
 - 🔄 **Auto Docs**: Generate documentation from schema (WIP)
 - 🛠️ **CLI Tools**: Fast mock, validate, and simulate APIs
 - 🌐 **Cross-language Ready**: Schema can be consumed by any language
@@ -18,24 +18,19 @@
 
 ```
 kumpun-framework/
-├── @kumpun/                      # Kumpun Monorepo Crates
-│   ├── core/                     # 🧠 Core routing, validation, type-safe handler mapping
-│   ├── cli/                      # 🛠️ CLI: kumpun dev, check, generate, docs
-│   ├── schema/                   # 📚 Rust crate: JSON Schema loader, validator, type-gen utils
-│   └── Cargo.toml                # 🗂️ Workspace manifest
+├── @kumpun/
+│   ├── core/
+│   ├── cli/
+│   ├── schema/
+│   └── Cargo.toml
 │
-├── schemas/                      # 📄 Pure JSON Schema files (used by all languages/tools)
-│   ├── user/
-│   │   ├── create.json
-│   │   └── login.json
-│   ├── post/
-│   │   └── update.json
-│   └── index.json                # (optional) registry or schema manifest
+├── schemas/                      # ⬅️ Flat-style JSON schema files
+│   ├── user.create.json
+│   ├── user.login.json
+│   ├── post.update.json
+│   └── index.json                # (optional) schema registry
 │
-├── examples/                     # 📦 Example apps using Kumpun CLI + core
-│   ├── minimal-api/
-│   └── ts-client-integration/
-│
+├── examples/
 ├── .gitignore
 ├── LICENSE
 └── README.md
@@ -49,7 +44,7 @@ kumpun-framework/
 $ kumpun dev
 
 😺  Welcome to Kumpun Framework!
-📦  Schema loaded: ./schemas/user.get.json
+📦  Schema loaded: ./schema/user.get.json
 🚀  Mock server running at http://localhost:3000
 ```
 
