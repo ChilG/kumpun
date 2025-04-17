@@ -1,10 +1,54 @@
+// =======================================================
+// 📦 schema_to_rust.rs - Struct Generator from JSON Schema
+//
+// ✅ = Supported     🔜 = Planned / Partial     ❌ = Not yet
+// =======================================================
+
+// 🔹 Core Struct Features
+// ✅ type: object              → generate struct
+// ✅ properties + required     → map to pub fields
+// ✅ optional fields           → Option<T>
+// ✅ primitive types           → string, number, boolean, integer
+
+// 🔹 Composition & Recursion
+// ✅ nested object             → recursive struct
+// ✅ array of primitives       → Vec<T>
+// ✅ array of object           → Vec<Struct>
+// ✅ $ref (in same file)       → resolve + reuse
+
+// 🔹 Enum & Union
+// ✅ enum (string values)      → Rust enum variants
+// 🔜 oneOf (object variants)   → map to enum variant with struct payload
+// ❌ anyOf / allOf             → not yet supported
+
+// 🔹 Schema Reuse
+// 🔜 $ref (external file)      → pending RefResolver (cross-file)
+// ❌ definitions + reuse across schemas
+
+// 🔹 Advanced Schema
+// 🔜 additionalProperties      → Option<HashMap<String, T>>
+// ❌ patternProperties         → not yet supported
+// ❌ const / default           → not included in output
+// 🔜 format, minLength, etc.   → can be added with #[validate] later
+
+// 🧪 Next Steps
+// - [ ] Implement `RefResolver` for cross-file $ref
+// - [ ] Support oneOf → enum variants with tagged structs
+// - [ ] Merge allOf fields using #[serde(flatten)]
+// - [ ] Optional: annotate with documentation/comments
+
+//! Schema-to-Rust Generator Progress
+//! - [x] Nested object
+//! - [ ] oneOf
+//! - [ ] RefResolver
+
 use serde_json::Value;
 use std::collections::HashSet;
 
 #[derive(Debug)]
-struct NamedStruct {
+pub struct NamedStruct {
     name: String,
-    code: String,
+    pub(crate) code: String,
 }
 
 pub fn generate_rust_structs_from_schema(root_name: &str, schema: &Value) -> Vec<NamedStruct> {
@@ -54,7 +98,7 @@ fn extract_struct_recursive(
     let mut fields = vec![];
 
     for (key, prop) in properties.as_object().unwrap() {
-        let field_name: &str = key;
+        let field_name = key.as_str();
         let is_required = required.contains(field_name);
         let rust_type = match infer_rust_type(prop, field_name, output, visited, definitions) {
             Some(t) => t,

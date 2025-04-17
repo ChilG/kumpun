@@ -1,6 +1,6 @@
 pub mod schema_to_rust;
 
-use serde_json::Value;
+use schema_to_rust::generate_rust_structs_from_schema;
 use std::fs;
 use std::io::Write;
 use std::path::{Path, PathBuf};
@@ -64,13 +64,25 @@ fn generate_typescript_stub(schema_name: &str, _schema: &str, out_dir: &str) {
     write_to_file(schema_name, "ts", &interface, out_dir);
 }
 
-fn generate_rust_stub(schema_name: &str, schema_json: &str, out_dir: &str) {
-    let schema: Value = serde_json::from_str(schema_json).expect("Invalid JSON schema");
+fn generate_rust_stub(schema_name: &str, schema_str: &str, out_dir: &str) {
+    // 1. Parse schema
+    let schema: serde_json::Value = serde_json::from_str(schema_str).expect("Invalid JSON Schema");
 
-    let struct_code = extract_struct(&schema, &to_pascal_case(schema_name))
-        .unwrap_or_else(|| "// Failed to generate struct".to_string());
+    // 2. แปลงชื่อ schema เป็น struct name เช่น user.login → UserLogin
+    let root_struct_name = to_pascal_case(schema_name);
 
-    write_to_file(schema_name, "rs", &struct_code, out_dir);
+    // 3. Generate all structs from schema
+    let structs = generate_rust_structs_from_schema(&root_struct_name, &schema);
+
+    // 4. รวมโค้ดทั้งหมดเป็น String
+    let full_code = structs
+        .iter()
+        .map(|s| s.code.as_str())
+        .collect::<Vec<_>>()
+        .join("\n\n");
+
+    // 5. เขียนลงไฟล์
+    write_to_file(schema_name, "rs", &full_code, out_dir);
 }
 
 fn to_pascal_case(name: &str) -> String {
@@ -83,41 +95,4 @@ fn to_pascal_case(name: &str) -> String {
             }
         })
         .collect()
-}
-
-fn extract_struct(schema: &Value, struct_name: &str) -> Option<String> {
-    let body = schema.get("properties")?.get("body")?.get("properties")?;
-    let required_fields = schema
-        .get("properties")?
-        .get("body")?
-        .get("required")
-        .and_then(|v| v.as_array())
-        .map(|arr| arr.iter().filter_map(|s| s.as_str()).collect::<Vec<_>>())
-        .unwrap_or_default();
-
-    let mut fields = vec![];
-    for (key, value) in body.as_object()? {
-        let rust_type = match value.get("type")?.as_str()? {
-            "string" => "String",
-            "integer" => "i32",
-            "number" => "f64",
-            "boolean" => "bool",
-            _ => "serde_json::Value",
-        };
-
-        let is_required = required_fields.contains(&key.as_str());
-        let field_type = if is_required {
-            rust_type.to_string()
-        } else {
-            format!("Option<{}>", rust_type)
-        };
-
-        fields.push(format!("    pub {}: {},", key, field_type));
-    }
-
-    Some(format!(
-        "#[derive(Debug, Serialize, Deserialize)]\npub struct {} {{\n{}\n}}",
-        struct_name,
-        fields.join("\n")
-    ))
 }
