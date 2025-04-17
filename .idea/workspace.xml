@@ -8,10 +8,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="07f3844c-b908-4138-89c2-b79add2c64e8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/@kumpun/cli/tests/cli_generate.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/Cargo.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -230,7 +227,7 @@
       <workItem from="1744887457253" duration="436000" />
       <workItem from="1744888158713" duration="899000" />
       <workItem from="1744889077245" duration="735000" />
-      <workItem from="1744890239224" duration="16788000" />
+      <workItem from="1744890239224" duration="16959000" />
     </task>
     <servers />
   </component>
