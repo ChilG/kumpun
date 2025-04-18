@@ -43,4 +43,7 @@ fn test_generate_struct_from_everything_schema() {
     assert!(output.contains("pub meta: Option<HashMap<String, String>>")); // หากรองรับ
     assert!(output.contains("pub enum Status")); // ตรวจ enum
     assert!(output.contains("pub enum Preferences")); // หากรองรับ oneOf
+    assert!(output.contains("pub struct PreferencesEmailOnly"));
+    assert!(output.contains("pub struct PreferencesSMSOnly"));
+    assert!(output.contains("use std::collections::HashMap;"));
 }

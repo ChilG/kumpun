@@ -8,12 +8,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="07f3844c-b908-4138-89c2-b79add2c64e8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/generate/schema_to_rust.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/generate/schema_to_rust.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/cli_generate_everything.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/tests/cli_generate_everything.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/generated/everything.example.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/tests/generated/everything.example.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -239,7 +235,7 @@
       <workItem from="1744888158713" duration="899000" />
       <workItem from="1744889077245" duration="735000" />
       <workItem from="1744890239224" duration="21306000" />
-      <workItem from="1744981935786" duration="407000" />
+      <workItem from="1744981935786" duration="582000" />
     </task>
     <servers />
   </component>
