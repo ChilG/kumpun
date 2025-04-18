@@ -67,6 +67,12 @@
         }
       ]
     },
+    "identifier": {
+      "anyOf": [
+        { "type": "string" },
+        { "type": "integer" }
+      ]
+    },
     "settings": {
       "type": "object",
       "allOf": [

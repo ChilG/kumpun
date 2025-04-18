@@ -34,7 +34,6 @@
 
 // 🔧 Code Output
 // ✅ auto import: HashMap
-// ✅ auto import: serde_json::Value
 // ❌ auto import: chrono, uuid, etc.
 
 // 🧪 Next Steps
@@ -51,6 +50,9 @@
 //! - [ ] AllOf
 //! - [ ] AnyOf
 //! - [ ] $ref cross-file
+// =======================================================
+// 📦 schema_to_rust.rs - Struct Generator from JSON Schema (Refactored)
+// =======================================================
 
 use serde_json::Value;
 use std::collections::HashSet;
@@ -77,18 +79,15 @@ pub fn generate_rust_structs_from_schema(root_name: &str, schema: &Value) -> Vec
     );
 
     let mut use_lines = vec![];
-
     for s in &structs {
         if s.code.contains("HashMap<") {
             use_lines.push("use std::collections::HashMap;");
         }
     }
 
-    // ป้องกันซ้ำ
     use_lines.sort();
     use_lines.dedup();
 
-    // ใส่ use ไว้บนสุด
     for (i, line) in use_lines.into_iter().rev().enumerate() {
         structs.insert(
             0,
@@ -113,7 +112,6 @@ fn extract_struct_recursive(
     if visited.contains(name) {
         return;
     }
-
     visited.insert(name.to_string());
 
     let Some(properties) = schema.get("properties") else {
@@ -165,7 +163,6 @@ fn infer_rust_type(
     visited: &mut HashSet<String>,
     definitions: &Value,
 ) -> Option<String> {
-    // $ref handling
     if let Some(ref_val) = prop.get("$ref").and_then(|v| v.as_str()) {
         let name = ref_val.split('/').last()?.to_string();
         let def = definitions.get(&name)?;
@@ -180,56 +177,19 @@ fn infer_rust_type(
         return Some(name);
     }
 
-    // oneOf handler (enum variants)
     if let Some(one_of) = prop.get("oneOf") {
-        let enum_name = to_pascal_case(key);
-        let mut variants = vec![];
-
-        for variant in one_of.as_array()? {
-            // ใช้ title หรือ fallback เป็น Variant1, Variant2
-            let title = variant
-                .get("title")
-                .and_then(|t| t.as_str())
-                .map(|s| to_pascal_case(s))
-                .unwrap_or_else(|| format!("Variant{}", variants.len() + 1));
-
-            let struct_name = format!("{}{}", enum_name, &title);
-            if variant.get("type") == Some(&Value::String("object".into())) {
-                extract_struct_recursive(
-                    &struct_name,
-                    variant,
-                    output,
-                    visited,
-                    "#".to_string(),
-                    definitions,
-                );
-                variants.push(format!("    {}({}),", title, struct_name));
-            } else {
-                // fallback: simple type (string, number)
-                let inner_type = infer_rust_type(variant, key, output, visited, definitions)
-                    .unwrap_or_else(|| "serde_json::Value".to_string());
-                variants.push(format!("    {}({}),", title, inner_type));
-            }
-        }
-
-        let enum_code = format!(
-            "#[derive(Debug, Serialize, Deserialize)]\n#[serde(tag = \"type\")]\npub enum {} {{\n{}\n}}",
-            enum_name,
-            variants.join("\n")
-        );
-
-        output.push(NamedStruct {
-            name: enum_name.clone(),
-            code: enum_code,
-        });
-
-        return Some(enum_name);
+        return handle_one_of(key, one_of, output, visited, definitions);
+    }
+    if let Some(any_of) = prop.get("anyOf") {
+        return handle_any_of(key, any_of, output, visited, definitions);
+    }
+    if let Some(all_of) = prop.get("allOf") {
+        return handle_all_of(key, all_of, output, visited, definitions);
     }
 
     match prop.get("type")?.as_str()? {
         "string" => {
             if let Some(enum_vals) = prop.get("enum") {
-                // Generate enum
                 let enum_name = to_pascal_case(key);
                 let variants = enum_vals
                     .as_array()?
@@ -238,7 +198,6 @@ fn infer_rust_type(
                     .map(|v| format!("    {},", to_pascal_case(v)))
                     .collect::<Vec<_>>()
                     .join("\n");
-
                 let code = format!(
                     "#[derive(Debug, Serialize, Deserialize)]\npub enum {} {{\n{}\n}}",
                     enum_name, variants
@@ -262,16 +221,12 @@ fn infer_rust_type(
             Some(format!("Vec<{}>", inner))
         }
         "object" => {
-            // Handle additionalProperties first
             if let Some(ap) = prop.get("additionalProperties") {
                 let inner_type =
                     infer_rust_type(ap, &format!("{}Value", key), output, visited, definitions)
                         .unwrap_or_else(|| "serde_json::Value".to_string());
-
                 return Some(format!("Option<HashMap<String, {}>>", inner_type));
             }
-
-            // fallback to named struct if it has properties
             if prop.get("properties").is_some() {
                 let sub_name = to_pascal_case(key);
                 extract_struct_recursive(
@@ -284,12 +239,129 @@ fn infer_rust_type(
                 );
                 return Some(sub_name);
             }
-
-            // fallback fallback
             Some("serde_json::Value".to_string())
         }
         _ => Some("serde_json::Value".to_string()),
     }
+}
+
+fn handle_one_of(
+    key: &str,
+    one_of: &Value,
+    output: &mut Vec<NamedStruct>,
+    visited: &mut HashSet<String>,
+    definitions: &Value,
+) -> Option<String> {
+    let enum_name = to_pascal_case(key);
+    let mut variants = vec![];
+
+    for variant in one_of.as_array()? {
+        let title = variant
+            .get("title")
+            .and_then(|t| t.as_str())
+            .map(|s| to_pascal_case(s))
+            .unwrap_or_else(|| format!("Variant{}", variants.len() + 1));
+
+        let struct_name = format!("{}{}", enum_name, &title);
+        if variant.get("type") == Some(&Value::String("object".into())) {
+            extract_struct_recursive(
+                &struct_name,
+                variant,
+                output,
+                visited,
+                "#".to_string(),
+                definitions,
+            );
+            variants.push(format!("    {}({}),", title, struct_name));
+        } else {
+            let inner_type = infer_rust_type(variant, &title, output, visited, definitions)
+                .unwrap_or_else(|| "serde_json::Value".to_string());
+            variants.push(format!("    {}({}),", title, inner_type));
+        }
+    }
+
+    let enum_code = format!(
+        "#[derive(Debug, Serialize, Deserialize)]\n#[serde(tag = \"type\")]\npub enum {} {{\n{}\n}}",
+        enum_name,
+        variants.join("\n")
+    );
+
+    output.push(NamedStruct {
+        name: enum_name.clone(),
+        code: enum_code,
+    });
+    Some(enum_name)
+}
+
+fn handle_any_of(
+    key: &str,
+    any_of: &Value,
+    output: &mut Vec<NamedStruct>,
+    visited: &mut HashSet<String>,
+    definitions: &Value,
+) -> Option<String> {
+    let enum_name = to_pascal_case(key);
+    let mut variants = vec![];
+
+    for (i, variant) in any_of.as_array()?.iter().enumerate() {
+        let var_name = format!("Variant{}", i + 1);
+        let inner_type = infer_rust_type(variant, &var_name, output, visited, definitions)
+            .unwrap_or_else(|| "serde_json::Value".to_string());
+        variants.push(format!("    {}({}),", var_name, inner_type));
+    }
+
+    let code = format!(
+        "#[derive(Debug, Serialize, Deserialize)]\n#[serde(untagged)]\npub enum {} {{\n{}\n}}",
+        enum_name,
+        variants.join("\n")
+    );
+
+    output.push(NamedStruct {
+        name: enum_name.clone(),
+        code,
+    });
+    Some(enum_name)
+}
+
+fn handle_all_of(
+    key: &str,
+    all_of: &Value,
+    output: &mut Vec<NamedStruct>,
+    visited: &mut HashSet<String>,
+    definitions: &Value,
+) -> Option<String> {
+    let main_struct_name = to_pascal_case(key);
+    let mut field_lines = vec![];
+
+    for (i, schema_part) in all_of.as_array()?.iter().enumerate() {
+        let part_name = format!("{}Part{}", main_struct_name, i + 1);
+        extract_struct_recursive(
+            &part_name,
+            schema_part,
+            output,
+            visited,
+            "#".to_string(),
+            definitions,
+        );
+        field_lines.push(format!(
+            "    #[serde(flatten)]\n    pub part_{}: {},",
+            i + 1,
+            part_name
+        ));
+    }
+
+    let struct_code = format!(
+        "#[derive(Debug, Serialize, Deserialize)]\npub struct {} {{\n{}\n}}",
+        main_struct_name,
+        field_lines.join("\n")
+    );
+
+    output.push(NamedStruct {
+        name: main_struct_name.clone(),
+        code: struct_code,
+    });
+
+    Some(main_struct_name)
 }
 
 pub fn to_pascal_case(name: &str) -> String {

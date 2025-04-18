@@ -1,6 +1,13 @@
 use std::collections::HashMap;
 
 #[derive(Debug, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum Identifier {
+    Variant1(String),
+    Variant2(i32),
+}
+
+#[derive(Debug, Serialize, Deserialize)]
 pub struct PreferencesEmailOnly {
     pub email: String,
 }
@@ -37,6 +44,24 @@ pub struct NestedRef {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+pub struct SettingsPart1 {
+    pub theme: Option<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SettingsPart2 {
+    pub notifications: Option<bool>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Settings {
+    #[serde(flatten)]
+    pub part_1: SettingsPart1,
+    #[serde(flatten)]
+    pub part_2: SettingsPart2,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
 pub enum Status {
     Active,
     Inactive,
@@ -47,12 +72,13 @@ pub enum Status {
 pub struct EverythingExample {
     pub age: Option<i32>,
     pub id: String,
+    pub identifier: Option<Identifier>,
     pub isActive: Option<bool>,
     pub meta: Option<HashMap<String, String>>,
     pub preferences: Option<Preferences>,
     pub profile: Profile,
     pub refExample: Option<NestedRef>,
-    pub settings: Option<serde_json::Value>,
+    pub settings: Option<Settings>,
     pub status: Status,
     pub tags: Vec<String>,
 }

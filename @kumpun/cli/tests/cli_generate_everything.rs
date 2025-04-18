@@ -45,5 +45,13 @@ fn test_generate_struct_from_everything_schema() {
     assert!(output.contains("pub enum Preferences")); // หากรองรับ oneOf
     assert!(output.contains("pub struct PreferencesEmailOnly"));
     assert!(output.contains("pub struct PreferencesSMSOnly"));
+    assert!(output.contains("pub identifier: Option<Identifier>"));
+    assert!(output.contains("pub enum Identifier"));
+    assert!(output.contains("Variant1(String)"));
+    assert!(output.contains("Variant2(i32)"));
+    assert!(output.contains("pub settings: Option<Settings>"));
+    assert!(output.contains("#[serde(flatten)]"));
+    assert!(output.contains("pub part_1: SettingsPart1"));
+    assert!(output.contains("pub part_2: SettingsPart2"));
     assert!(output.contains("use std::collections::HashMap;"));
 }
