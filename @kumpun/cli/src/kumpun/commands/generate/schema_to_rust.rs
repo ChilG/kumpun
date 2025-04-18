@@ -19,8 +19,8 @@
 // 🔹 Enum & Union
 // ✅ enum (string values)       → Rust enum variants
 // ✅ oneOf (object variants)    → Rust enum with struct payloads
-// ❌ anyOf                      → not yet supported
-// ❌ allOf                      → not yet supported
+// ✅ anyOf                      → untagged Rust enum (Variant<T1>, Variant<T2>, …)
+// ✅ allOf                      → merged struct with #[serde(flatten)]
 
 // 🔹 Schema Reuse
 // 🔜 $ref (external file)       → pending RefResolver (cross-file)
@@ -38,21 +38,17 @@
 
 // 🧪 Next Steps
 // - [ ] Implement `RefResolver` for cross-file $ref
-// - [ ] Support `anyOf` → untagged enum or matchable variant
-// - [ ] Support `allOf` → merged struct with #[serde(flatten)]
-// - [ ] Optional: annotate field-level doc/comments
+// - [ ] Support patternProperties → HashMap + regex
+// - [ ] Annotate doc/comments from `description`
 // - [ ] Generate test stubs or `impl` blocks (future idea)
 
 //! Schema-to-Rust Generator Progress
 //! - [x] OneOf as enum
+//! - [x] AnyOf as untagged enum
+//! - [x] AllOf as flatten struct
 //! - [x] Nested struct recursion
 //! - [x] additionalProperties as HashMap
-//! - [ ] AllOf
-//! - [ ] AnyOf
 //! - [ ] $ref cross-file
-// =======================================================
-// 📦 schema_to_rust.rs - Struct Generator from JSON Schema (Refactored)
-// =======================================================
 
 use serde_json::Value;
 use std::collections::HashSet;
