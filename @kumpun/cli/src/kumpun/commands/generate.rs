@@ -2,6 +2,8 @@ pub mod schema_to_rust;
 
 use schema_to_rust::generate_rust_structs_from_schema;
 use schema_to_rust::to_pascal_case;
+use schema_to_rust::write_named_structs;
+use schema_to_rust::RefResolver;
 use std::fs;
 use std::io::Write;
 use std::path::{Path, PathBuf};
@@ -32,7 +34,7 @@ pub fn run(schema: &str, target: &str, schema_dir: &str, out_dir: &str) {
 
     match target {
         "typescript" => generate_typescript_stub(schema, &schema_str, out_dir),
-        "rust" => generate_rust_stub(schema, &schema_str, out_dir),
+        "rust" => generate_rust_stub(schema, schema_dir, &schema_str, out_dir),
         _ => {
             eprintln!("❌ Unsupported target: {}", target);
             std::process::exit(1);
@@ -65,23 +67,19 @@ fn generate_typescript_stub(schema_name: &str, _schema: &str, out_dir: &str) {
     write_to_file(schema_name, "ts", &interface, out_dir);
 }
 
-fn generate_rust_stub(schema_name: &str, schema_str: &str, out_dir: &str) {
+fn generate_rust_stub(schema_name: &str, schema_dir: &str, schema_str: &str, out_dir: &str) {
     // 1. Parse schema
     let schema: serde_json::Value = serde_json::from_str(schema_str).expect("Invalid JSON Schema");
 
     // 2. แปลงชื่อ schema เป็น struct name เช่น user.login → UserLogin
     let root_struct_name = to_pascal_case(schema_name);
 
-    // 3. Generate all structs from schema
-    let structs = generate_rust_structs_from_schema(&root_struct_name, &schema);
+    // 3. Prepare RefResolver
+    let mut resolver = RefResolver::new(schema_dir);
 
-    // 4. รวมโค้ดทั้งหมดเป็น String
-    let full_code = structs
-        .iter()
-        .map(|s| s.code.as_str())
-        .collect::<Vec<_>>()
-        .join("\n\n");
+    // 4. Generate all structs
+    let structs = generate_rust_structs_from_schema(&root_struct_name, &schema, &mut resolver);
 
-    // 5. เขียนลงไฟล์
-    write_to_file(schema_name, "rs", &full_code, out_dir);
+    // 5. Write all structs to files
+    write_named_structs(&structs, out_dir, schema_name);
 }

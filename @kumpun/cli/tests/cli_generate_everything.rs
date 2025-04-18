@@ -5,10 +5,12 @@ use std::fs;
 #[test]
 fn test_generate_struct_from_everything_schema() {
     // 1. เตรียม schema ไฟล์
+    let schema_dir = "tests/fixtures/schemas";
+    let out_dir = "tests/generated";
     let schema = include_str!("../tests/fixtures/schemas/everything.example.json");
     fs::create_dir_all("tests/fixtures/schemas").unwrap();
+    fs::create_dir_all("tests/generated").unwrap();
     fs::write("tests/fixtures/schemas/everything.example.json", schema).unwrap();
-
     // 2. ลบไฟล์เดิมที่ generate แล้ว (เพื่อความสะอาด)
     let _ = fs::remove_file("tests/generated/everything.example.rs");
 
@@ -21,9 +23,9 @@ fn test_generate_struct_from_everything_schema() {
         "--target",
         "rust",
         "--schema-dir",
-        "tests/fixtures/schemas",
+        schema_dir,
         "--out-dir",
-        "tests/generated",
+        out_dir,
     ])
     .assert()
     .success()

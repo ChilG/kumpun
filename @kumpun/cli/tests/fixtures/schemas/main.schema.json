@@ -1,0 +1,10 @@
+{
+  "$id": "main.schema",
+  "type": "object",
+  "required": ["address"],
+  "properties": {
+    "address": {
+      "$ref": "shared/address.json"
+    }
+  }
+}

@@ -9,6 +9,13 @@ use kumpun::args::cli::{Cli, Commands};
 use kumpun::commands;
 
 fn main() {
+    // commands::generate::run(
+    //     "everything.example",
+    //     "rust",
+    //     "cli/tests/fixtures/schemas",
+    //     "cli/tests/generated",
+    // );
+
     let cli = Cli::parse();
 
     commands::init_all();

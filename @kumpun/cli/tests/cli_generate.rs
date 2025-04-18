@@ -14,6 +14,8 @@ fn test_generate_rust_struct_from_schema() {
   "required": ["email"]
 }"#;
 
+    let schema_dir = "tests/fixtures/schemas";
+    let out_dir = "tests/generated";
     let schema_path = "tests/fixtures/schemas/user.login.json";
     fs::create_dir_all("tests/fixtures/schemas").unwrap();
     fs::write(schema_path, test_schema).unwrap();
@@ -28,9 +30,9 @@ fn test_generate_rust_struct_from_schema() {
         "--target",
         "rust",
         "--schema-dir",
-        "tests/fixtures/schemas",
+        schema_dir,
         "--out-dir",
-        "tests/generated",
+        out_dir,
     ])
     .assert()
     .success()
