@@ -1,3 +1,22 @@
+use std::collections::HashMap;
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PreferencesEmailOnly {
+    pub email: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PreferencesSMSOnly {
+    pub phone: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(tag = "type")]
+pub enum Preferences {
+    EmailOnly(PreferencesEmailOnly),
+    SMSOnly(PreferencesSMSOnly),
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Address {
     pub line1: Option<String>,
@@ -29,11 +48,11 @@ pub struct EverythingExample {
     pub age: Option<i32>,
     pub id: String,
     pub isActive: Option<bool>,
-    pub meta: Meta,
+    pub meta: Option<HashMap<String, String>>,
     pub preferences: Option<Preferences>,
     pub profile: Profile,
     pub refExample: Option<NestedRef>,
-    pub settings: Option<Settings>,
+    pub settings: Option<serde_json::Value>,
     pub status: Status,
     pub tags: Vec<String>,
 }

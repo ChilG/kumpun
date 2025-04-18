@@ -16,14 +16,18 @@ fn test_generate_struct_from_everything_schema() {
     let mut cmd = Command::cargo_bin("kumpun-cli").unwrap();
     cmd.args([
         "generate",
-        "--schema", "everything.example",
-        "--target", "rust",
-        "--schema-dir", "tests/fixtures/schemas",
-        "--out-dir", "tests/generated"
+        "--schema",
+        "everything.example",
+        "--target",
+        "rust",
+        "--schema-dir",
+        "tests/fixtures/schemas",
+        "--out-dir",
+        "tests/generated",
     ])
-        .assert()
-        .success()
-        .stdout(contains("✅ Stub generated"));
+    .assert()
+    .success()
+    .stdout(contains("✅ Stub generated"));
 
     // 4. ตรวจสอบ output file ถูกสร้าง
     let output = fs::read_to_string("tests/generated/everything.example.rs")
