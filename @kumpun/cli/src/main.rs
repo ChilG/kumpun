@@ -1,14 +1,8 @@
-mod generated;
+mod kumpun;
 
+use crate::kumpun::args::cli::{Cli, Commands};
+use crate::kumpun::commands;
 use clap::Parser;
-
-mod kumpun {
-    pub mod args;
-    pub mod commands;
-}
-
-use kumpun::args::cli::{Cli, Commands};
-use kumpun::commands;
 
 fn main() {
     let cli = Cli::parse();

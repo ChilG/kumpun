@@ -18,18 +18,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="07f3844c-b908-4138-89c2-b79add2c64e8" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/mod.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/@kumpun/cli/tests/cli_cross_file_ref.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/@kumpun/cli/tests/cli_everything.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/@kumpun/cli/tests/cli_mod_rs_test.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/@kumpun/cli/tests/cli_serde_use_test.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/@kumpun/cli/tests/cli_simple.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/@kumpun/cli/tests/cli_snake_case_test.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/@kumpun/cli/tests/common.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/@kumpun/cli/tests/setup.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/Cargo.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/generated/everything_example.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/generated/main_schema.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/generated/mod.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/generated/shared/address.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/generated/shared/mod.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/generated/user_login.rs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/generate/schema_to_rust.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/generate/schema_to_rust.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/src/main.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/cli_cross_file_ref_generation.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/tests/cli_cross_file_ref_generation.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/cli_generate.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/tests/cli_generate.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/cli_generate_everything.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/tests/cli_generate_everything.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/generated/everything.example.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/generated/main.schema.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/generated/shared/address.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/generated/user.login.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/cli_cross_file_ref_generation.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/cli_generate.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/cli_generate_everything.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/fixtures/schemas/everything.example.json" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/tests/fixtures/schemas/everything.example.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,8 +93,12 @@
     "Cargo.Test cli_integration.executor": "Run",
     "Cargo.Test test_cross_file_ref_generation (1).executor": "Run",
     "Cargo.Test test_cross_file_ref_generation.executor": "Run",
+    "Cargo.Test test_generate_rust_struct_from_schema (1).executor": "Run",
     "Cargo.Test test_generate_rust_struct_from_schema.executor": "Run",
     "Cargo.Test test_generate_struct_from_everything_schema.executor": "Run",
+    "Cargo.Test test_mod_rs_generated.executor": "Run",
+    "Cargo.Test test_serde_use_added.executor": "Run",
+    "Cargo.Test test_snake_case_filename_and_fields.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.rust.reset.selective.auto.import": "true",
@@ -112,7 +127,9 @@
     "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/everything.example.rs": "true",
     "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/main.rs": "true",
     "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/main.schema.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/main_schema.rs": "true",
     "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/shared/address.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/shared/mod.rs": "true",
     "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/user.login.rs": "true",
     "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/args/cli.rs": "true",
     "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/commands/check.rs": "true",
@@ -151,26 +168,9 @@
   <component name="RsExternalLinterProjectSettings">
     <option name="runOnTheFly" value="true" />
   </component>
-  <component name="RunManager" selected="Cargo.Test test_generate_rust_struct_from_schema">
-    <configuration name="Run kumpun-cli" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
-      <option name="buildProfileId" value="dev" />
-      <option name="command" value="run --package kumpun-cli --bin kumpun-cli" />
-      <option name="workingDirectory" value="file://$PROJECT_DIR$/@kumpun" />
-      <envs />
-      <option name="emulateTerminal" value="true" />
-      <option name="channel" value="DEFAULT" />
-      <option name="requiredFeatures" value="true" />
-      <option name="allFeatures" value="false" />
-      <option name="withSudo" value="false" />
-      <option name="buildTarget" value="REMOTE" />
-      <option name="backtrace" value="SHORT" />
-      <option name="isRedirectInput" value="false" />
-      <option name="redirectInputPath" value="" />
-      <method v="2">
-        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="Cargo.Test test_generate_struct_from_everything_schema">
     <configuration name="Test test_cross_file_ref_generation" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="buildProfileId" value="test" />
       <option name="command" value="test --package kumpun-cli --test cli_cross_file_ref_generation test_cross_file_ref_generation -- --exact" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$/@kumpun" />
       <envs />
@@ -187,8 +187,24 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Test test_generate_rust_struct_from_schema (1)" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="command" value="test --package kumpun-cli --test cli_simple test_generate_rust_struct_from_schema -- --exact" />
+      <option name="workingDirectory" value="file://$PROJECT_DIR$/@kumpun" />
+      <envs />
+      <option name="emulateTerminal" value="true" />
+      <option name="channel" value="DEFAULT" />
+      <option name="requiredFeatures" value="true" />
+      <option name="allFeatures" value="false" />
+      <option name="withSudo" value="false" />
+      <option name="buildTarget" value="REMOTE" />
+      <option name="backtrace" value="SHORT" />
+      <option name="isRedirectInput" value="false" />
+      <option name="redirectInputPath" value="" />
+      <method v="2">
+        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Test test_generate_rust_struct_from_schema" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
-      <option name="buildProfileId" value="test" />
       <option name="command" value="test --package kumpun-cli --test cli_generate test_generate_rust_struct_from_schema -- --exact" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$/@kumpun" />
       <envs />
@@ -206,8 +222,7 @@
       </method>
     </configuration>
     <configuration name="Test test_generate_struct_from_everything_schema" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
-      <option name="buildProfileId" value="test" />
-      <option name="command" value="test --package kumpun-cli --test cli_generate_everything test_generate_struct_from_everything_schema -- --exact" />
+      <option name="command" value="test --package kumpun-cli --test cli_everything test_generate_struct_from_everything_schema -- --exact" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$/@kumpun" />
       <envs />
       <option name="emulateTerminal" value="true" />
@@ -223,18 +238,12 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
-    <list>
-      <item itemvalue="Cargo.Test test_cross_file_ref_generation" />
-      <item itemvalue="Cargo.Test test_generate_struct_from_everything_schema" />
-      <item itemvalue="Cargo.Test test_generate_rust_struct_from_schema" />
-      <item itemvalue="Cargo.Run kumpun-cli" />
-    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Cargo.Test test_generate_rust_struct_from_schema" />
         <item itemvalue="Cargo.Test test_generate_struct_from_everything_schema" />
+        <item itemvalue="Cargo.Test test_generate_rust_struct_from_schema (1)" />
+        <item itemvalue="Cargo.Test test_generate_rust_struct_from_schema" />
         <item itemvalue="Cargo.Test test_cross_file_ref_generation" />
-        <item itemvalue="Cargo.Run kumpun-cli" />
       </list>
     </recent_temporary>
   </component>
@@ -255,7 +264,7 @@
       <workItem from="1744890239224" duration="21306000" />
       <workItem from="1744981935786" duration="3179000" />
       <workItem from="1744985502676" duration="82000" />
-      <workItem from="1744985589293" duration="19310000" />
+      <workItem from="1744985589293" duration="21843000" />
     </task>
     <servers />
   </component>

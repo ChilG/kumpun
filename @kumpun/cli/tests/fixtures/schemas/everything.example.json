@@ -13,6 +13,9 @@
       "type": "integer",
       "minimum": 0
     },
+    "address": {
+      "$ref": "shared/address.json"
+    },
     "isActive": {
       "type": "boolean"
     },

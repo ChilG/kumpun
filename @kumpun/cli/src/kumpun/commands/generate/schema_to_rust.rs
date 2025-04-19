@@ -127,7 +127,10 @@ fn generate_mod_rs_recursively(dir: &Path) -> std::io::Result<()> {
         if path.is_dir() {
             generate_mod_rs_recursively(&path)?;
             if path.join("mod.rs").exists() {
-                mod_lines.push(format!("pub mod {};", path.file_name().unwrap().to_str().unwrap()));
+                mod_lines.push(format!(
+                    "pub mod {};",
+                    path.file_name().unwrap().to_str().unwrap()
+                ));
             }
         } else if path.is_file() {
             if let Some(name) = path.file_stem().and_then(|n| n.to_str()) {
@@ -260,7 +263,7 @@ fn extract_struct_recursive(
             resolver,
             output_path.clone(),
         )
-            .unwrap_or_else(|| "serde_json::Value".to_string());
+        .unwrap_or_else(|| "serde_json::Value".to_string());
 
         let final_type = if is_required {
             rust_type
