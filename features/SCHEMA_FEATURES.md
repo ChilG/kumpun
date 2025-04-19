@@ -24,7 +24,7 @@
 
 ## 🔹 Schema Reuse
 - ✅ `$ref` (external file) → RefResolver supports cross-file
-- ❌ definitions reuse → not reused across multiple fields
+- ✅ definitions reuse → even if not used across multiple fields
 
 ## 🔹 Advanced Schema
 - ✅ `additionalProperties` → `Option<HashMap<String, T>>`
@@ -54,6 +54,7 @@
 - [x] Insert `use serde::{Deserialize, Serialize}` when required
 - [x] Annotate doc/comments from `description`
 - [x] Add `examples` to doc comment output
+- [x] Support `definitions` reuse even if used only once
 - [ ] Support `patternProperties` → `HashMap` + regex
 - [ ] Generate test stubs or `impl` blocks (future idea)
 
@@ -66,3 +67,4 @@
 - [x] Nested struct recursion
 - [x] additionalProperties as HashMap
 - [x] `$ref` cross-file
+- [x] definitions reuse (even single-use)

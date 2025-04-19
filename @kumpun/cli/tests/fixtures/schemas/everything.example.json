@@ -73,7 +73,7 @@
           "examples": ["Sutha"]
         },
         "address": {
-          "type": "object",
+          "$ref": "#/definitions/ProfileAddress",
           "description": "Detailed nested address for profile.",
           "examples": [
             {
@@ -81,24 +81,7 @@
               "line2": "Apt 4B",
               "zip": "10110"
             }
-          ],
-          "properties": {
-            "line1": {
-              "type": "string",
-              "description": "First line of address.",
-              "examples": ["123 Main Street"]
-            },
-            "line2": {
-              "type": "string",
-              "description": "Second line of address.",
-              "examples": ["Apt 4B"]
-            },
-            "zip": {
-              "type": "string",
-              "description": "ZIP or postal code.",
-              "examples": ["10110"]
-            }
-          }
+          ]
         }
       }
     },
@@ -211,6 +194,34 @@
           "type": "string",
           "description": "Note field within nested reference.",
           "examples": ["This is a nested reference"]
+        }
+      }
+    },
+    "ProfileAddress": {
+      "type": "object",
+      "description": "Detailed nested address for profile.",
+      "examples": [
+        {
+          "line1": "123 Main Street",
+          "line2": "Apt 4B",
+          "zip": "10110"
+        }
+      ],
+      "properties": {
+        "line1": {
+          "type": "string",
+          "description": "First line of address.",
+          "examples": ["123 Main Street"]
+        },
+        "line2": {
+          "type": "string",
+          "description": "Second line of address.",
+          "examples": ["Apt 4B"]
+        },
+        "zip": {
+          "type": "string",
+          "description": "ZIP or postal code.",
+          "examples": ["10110"]
         }
       }
     }
