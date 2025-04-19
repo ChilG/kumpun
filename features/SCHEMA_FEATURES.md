@@ -31,7 +31,11 @@
 - ❌ `patternProperties` → not yet supported
 - ❌ `const` / `default` → not included in output
 - 🔜 `format`, `minLength`, etc. → can be added with `#[validate]` later
+
+## 🔹 Metadata Mapping
 - ✅ `description` → generates `///` doc comments for fields, enums, oneOf/anyOf/allOf
+- ✅ `examples` → rendered as inline `/// Example: ...` (with `description`)
+- ❌ `title` → not used (fallback only for missing description)
 
 ## 🔧 Code Output
 - ✅ auto import: `HashMap`
@@ -49,6 +53,7 @@
 - [x] Convert filenames and fields to `snake_case`
 - [x] Insert `use serde::{Deserialize, Serialize}` when required
 - [x] Annotate doc/comments from `description`
+- [x] Add `examples` to doc comment output
 - [ ] Support `patternProperties` → `HashMap` + regex
 - [ ] Generate test stubs or `impl` blocks (future idea)
 

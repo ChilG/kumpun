@@ -8,53 +8,96 @@
     "id": {
       "type": "string",
       "format": "uuid",
-      "description": "Unique identifier (UUID) for the entity."
+      "description": "Unique identifier (UUID) for the entity.",
+      "examples": ["550e8400-e29b-41d4-a716-446655440000"]
     },
     "age": {
       "type": "integer",
       "minimum": 0,
-      "description": "Age of the user in years."
+      "description": "Age of the user in years.",
+      "examples": [30]
     },
     "address": {
       "$ref": "shared/address.json",
-      "description": "Mailing address of the user."
+      "description": "Mailing address of the user.",
+      "examples": [{"city": "Bangkok", "zip": "10110"}]
     },
     "gadgets": {
       "type": "array",
       "items": {
         "$ref": "shared/gadget/item.json"
       },
-      "description": "List of gadget items the user owns."
+      "description": "List of gadget items the user owns.",
+      "examples": [
+        [
+          {"name": "Smartphone", "price": 699},
+          {"name": "Smartwatch", "price": 199}
+        ]
+      ]
     },
     "isActive": {
       "type": "boolean",
-      "description": "Indicates whether the user is currently active."
+      "description": "Indicates whether the user is currently active.",
+      "examples": [true]
     },
     "tags": {
       "type": "array",
       "items": { "type": "string" },
-      "description": "Tags or labels associated with the user."
+      "description": "Tags or labels associated with the user.",
+      "examples": [["tech", "developer"]]
     },
     "profile": {
       "type": "object",
       "required": ["firstName", "lastName"],
       "description": "Basic profile information.",
+      "examples": [
+        {
+          "firstName": "Nantapon",
+          "lastName": "Sutha",
+          "address": {
+            "line1": "123 Main Street",
+            "line2": "Apt 4B",
+            "zip": "10110"
+          }
+        }
+      ],
       "properties": {
         "firstName": {
           "type": "string",
-          "description": "User's first name."
+          "description": "User's first name.",
+          "examples": ["Nantapon"]
         },
         "lastName": {
           "type": "string",
-          "description": "User's last name."
+          "description": "User's last name.",
+          "examples": ["Sutha"]
         },
         "address": {
           "type": "object",
           "description": "Detailed nested address for profile.",
+          "examples": [
+            {
+              "line1": "123 Main Street",
+              "line2": "Apt 4B",
+              "zip": "10110"
+            }
+          ],
           "properties": {
-            "line1": { "type": "string", "description": "First line of address." },
-            "line2": { "type": "string", "description": "Second line of address." },
-            "zip": { "type": "string", "description": "ZIP or postal code." }
+            "line1": {
+              "type": "string",
+              "description": "First line of address.",
+              "examples": ["123 Main Street"]
+            },
+            "line2": {
+              "type": "string",
+              "description": "Second line of address.",
+              "examples": ["Apt 4B"]
+            },
+            "zip": {
+              "type": "string",
+              "description": "ZIP or postal code.",
+              "examples": ["10110"]
+            }
           }
         }
       }
@@ -62,14 +105,16 @@
     "status": {
       "type": "string",
       "enum": ["active", "inactive", "banned"],
-      "description": "User status indicator."
+      "description": "User status indicator.",
+      "examples": ["active"]
     },
     "meta": {
       "type": "object",
       "additionalProperties": {
         "type": "string"
       },
-      "description": "Arbitrary metadata as key-value pairs."
+      "description": "Arbitrary metadata as key-value pairs.",
+      "examples": [{"nickname": "nanta", "language": "th"}]
     },
     "preferences": {
       "type": "object",
@@ -81,11 +126,13 @@
             "email": {
               "type": "string",
               "format": "email",
-              "description": "User's email address."
+              "description": "User's email address.",
+              "examples": ["user@example.com"]
             }
           },
           "required": ["email"],
-          "description": "User prefers email communication only."
+          "description": "User prefers email communication only.",
+          "examples": [{"email": "user@example.com"}]
         },
         {
           "title": "SMSOnly",
@@ -93,43 +140,67 @@
           "properties": {
             "phone": {
               "type": "string",
-              "description": "User's phone number."
+              "description": "User's phone number.",
+              "examples": ["+66812345678"]
             }
           },
           "required": ["phone"],
-          "description": "User prefers SMS communication only."
+          "description": "User prefers SMS communication only.",
+          "examples": [{"phone": "+66812345678"}]
         }
       ],
-      "description": "User communication preferences."
+      "description": "User communication preferences.",
+      "examples": [{"email": "user@example.com"}]
     },
     "identifier": {
       "anyOf": [
-        { "type": "string", "description": "String-based identifier." },
-        { "type": "integer", "description": "Integer-based identifier." }
+        {
+          "type": "string",
+          "description": "String-based identifier.",
+          "examples": ["user_001"]
+        },
+        {
+          "type": "integer",
+          "description": "Integer-based identifier.",
+          "examples": [1001]
+        }
       ],
-      "description": "Flexible identifier which could be a string or number."
+      "description": "Flexible identifier which could be a string or number.",
+      "examples": ["user_001"]
     },
     "settings": {
       "type": "object",
       "allOf": [
         {
           "properties": {
-            "theme": { "type": "string", "description": "User's theme preference." }
+            "theme": {
+              "type": "string",
+              "description": "User's theme preference.",
+              "examples": ["dark"]
+            }
           },
-          "description": "UI theme setting."
+          "description": "UI theme setting.",
+          "examples": [{"theme": "dark"}]
         },
         {
           "properties": {
-            "notifications": { "type": "boolean", "description": "Whether user allows notifications." }
+            "notifications": {
+              "type": "boolean",
+              "description": "Whether user allows notifications.",
+              "examples": [true]
+            }
           },
-          "description": "Notification settings."
+          "description": "Notification settings.",
+          "examples": [{"notifications": true}]
         }
       ],
-      "description": "User configurable settings."
+      "description": "User configurable settings.",
+      "examples": [{"theme": "dark", "notifications": true}]
     },
     "refExample": {
       "$ref": "#/definitions/NestedRef",
-      "description": "Reference to nested definition."
+      "description": "Reference to nested definition.",
+      "examples": [{"note": "This is a nested reference"}]
     }
   },
   "definitions": {
@@ -138,7 +209,8 @@
       "properties": {
         "note": {
           "type": "string",
-          "description": "Note field within nested reference."
+          "description": "Note field within nested reference.",
+          "examples": ["This is a nested reference"]
         }
       }
     }

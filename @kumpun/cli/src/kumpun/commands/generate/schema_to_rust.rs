@@ -10,7 +10,7 @@ use std::path::{Path, PathBuf};
 pub struct NamedStruct {
     pub name: String,
     pub code: String,
-    pub output_path: Option<String>, // <- file path hint (e.g., "shared/address")
+    pub output_path: Option<String>,
 }
 
 pub struct RefResolver {
@@ -276,8 +276,9 @@ fn extract_struct_recursive(
         };
 
         if with_docs {
-            if let Some(desc) = prop.get("description").and_then(|d| d.as_str()) {
-                fields.push(format!("    /// {}", desc));
+            let doc_block = doc_lines_to_string_block(prop, 4);
+            if !doc_block.is_empty() {
+                fields.push(doc_block);
             }
         }
 
@@ -485,8 +486,40 @@ fn extract_top_description(items: &Value) -> Option<String> {
         }
     }
 
-    // ถ้ารายการถัดไปไม่มี description หรือซ้ำหมด ถือว่าไม่ต้องใส่
     None
+}
+
+fn generate_doc_lines(schema: &Value) -> Vec<String> {
+    let mut lines = vec![];
+
+    if let Some(desc) = schema.get("description").and_then(|d| d.as_str()) {
+        lines.push(format!("/// {}", desc));
+    }
+
+    if let Some(example) = schema
+        .get("examples")
+        .and_then(|e| e.as_array())
+        .and_then(|arr| arr.get(0))
+    {
+        let rendered = match example {
+            Value::String(s) => format!("\"{}\"", s),
+            Value::Number(n) => n.to_string(),
+            Value::Bool(b) => b.to_string(),
+            other => other.to_string(),
+        };
+        lines.push(format!("/// Example: {}", rendered));
+    }
+
+    lines
+}
+
+fn doc_lines_to_string_block(schema: &Value, indent: usize) -> String {
+    let prefix = " ".repeat(indent);
+    generate_doc_lines(schema)
+        .into_iter()
+        .map(|line| format!("{}{}", prefix, line))
+        .collect::<Vec<_>>()
+        .join("\n")
 }
 
 fn handle_one_of(
@@ -512,8 +545,6 @@ fn handle_one_of(
         let struct_name = format!("{}{}", enum_name, &title);
 
         if variant.get("type") == Some(&Value::String("object".into())) {
-            let comment_line = variant.get("description").and_then(|d| d.as_str());
-
             extract_struct_recursive(
                 &struct_name,
                 variant,
@@ -533,11 +564,11 @@ fn handle_one_of(
             }
 
             if with_docs {
-                if let Some(desc) = comment_line {
-                    variants.push(format!("    /// {}\n    {}({}),", desc, title, struct_name));
-                } else {
-                    variants.push(format!("    {}({}),", title, struct_name));
+                let doc_block = doc_lines_to_string_block(variant, 4);
+                if !doc_block.is_empty() {
+                    variants.push(doc_block);
                 }
+                variants.push(format!("    {}({}),", title, struct_name));
             } else {
                 variants.push(format!("    {}({}),", title, struct_name));
             }
@@ -601,17 +632,12 @@ fn handle_any_of(
         )
         .unwrap_or_else(|| "serde_json::Value".to_string());
 
-        let comment_line = variant.get("description").and_then(|d| d.as_str());
-
         if with_docs {
-            if let Some(desc) = comment_line {
-                variants.push(format!(
-                    "    /// {}\n    {}({}),",
-                    desc, var_name, inner_type
-                ));
-            } else {
-                variants.push(format!("    {}({}),", var_name, inner_type));
+            let doc_block = doc_lines_to_string_block(variant, 4);
+            if !doc_block.is_empty() {
+                variants.push(doc_block);
             }
+            variants.push(format!("    {}({}),", var_name, inner_type));
         } else {
             variants.push(format!("    {}({}),", var_name, inner_type));
         }
@@ -650,8 +676,9 @@ fn handle_all_of(
         let part_name = format!("{}Part{}", main_struct_name, i + 1);
 
         if with_docs {
-            if let Some(desc) = schema_part.get("description").and_then(|d| d.as_str()) {
-                field_lines.push(format!("    /// {}", desc));
+            let doc_block = doc_lines_to_string_block(schema_part, 4);
+            if !doc_block.is_empty() {
+                field_lines.push(doc_block);
             }
         }
 
