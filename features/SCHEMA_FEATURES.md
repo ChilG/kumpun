@@ -31,6 +31,7 @@
 - ❌ `patternProperties` → not yet supported
 - ❌ `const` / `default` → not included in output
 - 🔜 `format`, `minLength`, etc. → can be added with `#[validate]` later
+- ✅ `description` → generates `///` doc comments for fields, enums, oneOf/anyOf/allOf
 
 ## 🔧 Code Output
 - ✅ auto import: `HashMap`
@@ -47,8 +48,8 @@
 - [x] Prefix `crate::generated::...` for imports
 - [x] Convert filenames and fields to `snake_case`
 - [x] Insert `use serde::{Deserialize, Serialize}` when required
+- [x] Annotate doc/comments from `description`
 - [ ] Support `patternProperties` → `HashMap` + regex
-- [ ] Annotate doc/comments from `description`
 - [ ] Generate test stubs or `impl` blocks (future idea)
 
 ---

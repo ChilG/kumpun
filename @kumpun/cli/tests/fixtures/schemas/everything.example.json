@@ -7,53 +7,69 @@
   "properties": {
     "id": {
       "type": "string",
-      "format": "uuid"
+      "format": "uuid",
+      "description": "Unique identifier (UUID) for the entity."
     },
     "age": {
       "type": "integer",
-      "minimum": 0
+      "minimum": 0,
+      "description": "Age of the user in years."
     },
     "address": {
-      "$ref": "shared/address.json"
+      "$ref": "shared/address.json",
+      "description": "Mailing address of the user."
     },
     "gadgets": {
       "type": "array",
       "items": {
         "$ref": "shared/gadget/item.json"
-      }
+      },
+      "description": "List of gadget items the user owns."
     },
     "isActive": {
-      "type": "boolean"
+      "type": "boolean",
+      "description": "Indicates whether the user is currently active."
     },
     "tags": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": { "type": "string" },
+      "description": "Tags or labels associated with the user."
     },
     "profile": {
       "type": "object",
       "required": ["firstName", "lastName"],
+      "description": "Basic profile information.",
       "properties": {
-        "firstName": { "type": "string" },
-        "lastName": { "type": "string" },
+        "firstName": {
+          "type": "string",
+          "description": "User's first name."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "User's last name."
+        },
         "address": {
           "type": "object",
+          "description": "Detailed nested address for profile.",
           "properties": {
-            "line1": { "type": "string" },
-            "line2": { "type": "string" },
-            "zip": { "type": "string" }
+            "line1": { "type": "string", "description": "First line of address." },
+            "line2": { "type": "string", "description": "Second line of address." },
+            "zip": { "type": "string", "description": "ZIP or postal code." }
           }
         }
       }
     },
     "status": {
       "type": "string",
-      "enum": ["active", "inactive", "banned"]
+      "enum": ["active", "inactive", "banned"],
+      "description": "User status indicator."
     },
     "meta": {
       "type": "object",
       "additionalProperties": {
         "type": "string"
-      }
+      },
+      "description": "Arbitrary metadata as key-value pairs."
     },
     "preferences": {
       "type": "object",
@@ -62,50 +78,68 @@
           "title": "EmailOnly",
           "type": "object",
           "properties": {
-            "email": { "type": "string", "format": "email" }
+            "email": {
+              "type": "string",
+              "format": "email",
+              "description": "User's email address."
+            }
           },
-          "required": ["email"]
+          "required": ["email"],
+          "description": "User prefers email communication only."
         },
         {
           "title": "SMSOnly",
           "type": "object",
           "properties": {
-            "phone": { "type": "string" }
+            "phone": {
+              "type": "string",
+              "description": "User's phone number."
+            }
           },
-          "required": ["phone"]
+          "required": ["phone"],
+          "description": "User prefers SMS communication only."
         }
-      ]
+      ],
+      "description": "User communication preferences."
     },
     "identifier": {
       "anyOf": [
-        { "type": "string" },
-        { "type": "integer" }
-      ]
+        { "type": "string", "description": "String-based identifier." },
+        { "type": "integer", "description": "Integer-based identifier." }
+      ],
+      "description": "Flexible identifier which could be a string or number."
     },
     "settings": {
       "type": "object",
       "allOf": [
         {
           "properties": {
-            "theme": { "type": "string" }
-          }
+            "theme": { "type": "string", "description": "User's theme preference." }
+          },
+          "description": "UI theme setting."
         },
         {
           "properties": {
-            "notifications": { "type": "boolean" }
-          }
+            "notifications": { "type": "boolean", "description": "Whether user allows notifications." }
+          },
+          "description": "Notification settings."
         }
-      ]
+      ],
+      "description": "User configurable settings."
     },
     "refExample": {
-      "$ref": "#/definitions/NestedRef"
+      "$ref": "#/definitions/NestedRef",
+      "description": "Reference to nested definition."
     }
   },
   "definitions": {
     "NestedRef": {
       "type": "object",
       "properties": {
-        "note": { "type": "string" }
+        "note": {
+          "type": "string",
+          "description": "Note field within nested reference."
+        }
       }
     }
   }

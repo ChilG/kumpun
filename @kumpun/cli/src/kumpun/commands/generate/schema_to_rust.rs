@@ -271,6 +271,10 @@ fn extract_struct_recursive(
             format!("Option<{}>", rust_type)
         };
 
+        if let Some(desc) = prop.get("description").and_then(|d| d.as_str()) {
+            fields.push(format!("    /// {}", desc));
+        }
+
         fields.push(format!("    pub {}: {},", field_name, final_type));
     }
 
@@ -443,6 +447,22 @@ fn infer_rust_type(
     }
 }
 
+fn extract_top_description(items: &Value) -> Option<String> {
+    let arr = items.as_array()?;
+    let top = arr.get(0)?.get("description")?.as_str()?;
+
+    for v in arr.iter().skip(1) {
+        if let Some(desc) = v.get("description").and_then(|d| d.as_str()) {
+            if desc != top {
+                return Some(format!("/// {}", top));
+            }
+        }
+    }
+
+    // ถ้ารายการถัดไปไม่มี description หรือซ้ำหมด ถือว่าไม่ต้องใส่
+    None
+}
+
 fn handle_one_of(
     key: &str,
     one_of: &Value,
@@ -463,7 +483,14 @@ fn handle_one_of(
             .unwrap_or_else(|| format!("Variant{}", variants.len() + 1));
 
         let struct_name = format!("{}{}", enum_name, &title);
+
         if variant.get("type") == Some(&Value::String("object".into())) {
+            let mut struct_fields = vec![];
+
+            if let Some(desc) = variant.get("description").and_then(|d| d.as_str()) {
+                struct_fields.push(format!("/// {}", desc));
+            }
+
             extract_struct_recursive(
                 &struct_name,
                 variant,
@@ -474,6 +501,13 @@ fn handle_one_of(
                 resolver,
                 output_path.clone(),
             );
+
+            if let Some(last) = output.last_mut() {
+                if last.name == struct_name && !struct_fields.is_empty() {
+                    last.code = format!("{}\n{}", struct_fields.join("\n"), last.code);
+                }
+            }
+
             variants.push(format!("    {}({}),", title, struct_name));
         } else {
             let inner_type = infer_rust_type(
@@ -490,11 +524,16 @@ fn handle_one_of(
         }
     }
 
-    let enum_code = format!(
+    let mut lines = vec![];
+    if let Some(comment) = extract_top_description(one_of) {
+        lines.push(comment);
+    }
+    lines.push(format!(
         "#[derive(Debug, Serialize, Deserialize)]\n#[serde(tag = \"type\")]\npub enum {} {{\n{}\n}}",
         enum_name,
         variants.join("\n")
-    );
+    ));
+    let enum_code = lines.join("\n");
 
     output.push(NamedStruct {
         name: enum_name.clone(),
@@ -518,6 +557,7 @@ fn handle_any_of(
 
     for (i, variant) in any_of.as_array()?.iter().enumerate() {
         let var_name = format!("Variant{}", i + 1);
+
         let inner_type = infer_rust_type(
             variant,
             &var_name,
@@ -528,14 +568,26 @@ fn handle_any_of(
             output_path.clone(),
         )
         .unwrap_or_else(|| "serde_json::Value".to_string());
-        variants.push(format!("    {}({}),", var_name, inner_type));
+
+        let comment_line = variant.get("description").and_then(|d| d.as_str());
+
+        if let Some(desc) = comment_line {
+            variants.push(format!(
+                "    /// {}\n    {}({}),",
+                desc, var_name, inner_type
+            ));
+        } else {
+            variants.push(format!("    {}({}),", var_name, inner_type));
+        }
     }
 
-    let code = format!(
+    let mut lines = vec![];
+    lines.push(format!(
         "#[derive(Debug, Serialize, Deserialize)]\n#[serde(untagged)]\npub enum {} {{\n{}\n}}",
         enum_name,
         variants.join("\n")
-    );
+    ));
+    let code = lines.join("\n");
 
     output.push(NamedStruct {
         name: enum_name.clone(),
@@ -559,6 +611,11 @@ fn handle_all_of(
 
     for (i, schema_part) in all_of.as_array()?.iter().enumerate() {
         let part_name = format!("{}Part{}", main_struct_name, i + 1);
+
+        if let Some(desc) = schema_part.get("description").and_then(|d| d.as_str()) {
+            field_lines.push(format!("    /// {}", desc));
+        }
+
         extract_struct_recursive(
             &part_name,
             schema_part,
@@ -569,6 +626,7 @@ fn handle_all_of(
             resolver,
             output_path.clone(),
         );
+
         field_lines.push(format!(
             "    #[serde(flatten)]\n    pub part_{}: {},",
             i + 1,
@@ -576,11 +634,17 @@ fn handle_all_of(
         ));
     }
 
-    let struct_code = format!(
+    let mut struct_lines = vec![];
+    if let Some(comment) = extract_top_description(all_of) {
+        struct_lines.push(comment);
+    }
+    struct_lines.push(format!(
         "#[derive(Debug, Serialize, Deserialize)]\npub struct {} {{\n{}\n}}",
         main_struct_name,
         field_lines.join("\n")
-    );
+    ));
+
+    let struct_code = struct_lines.join("\n");
 
     output.push(NamedStruct {
         name: main_struct_name.clone(),
