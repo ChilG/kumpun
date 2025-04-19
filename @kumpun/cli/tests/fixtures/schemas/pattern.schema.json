@@ -1,0 +1,16 @@
+{
+  "$id": "pattern.test",
+  "type": "object",
+  "title": "PatternExample",
+  "description": "Schema with patternProperties for dynamic keys.",
+  "patternProperties": {
+    "^str_": {
+      "type": "string",
+      "description": "String value with 'str_' prefix."
+    },
+    "^num_": {
+      "type": "number",
+      "description": "Number value with 'num_' prefix."
+    }
+  }
+}

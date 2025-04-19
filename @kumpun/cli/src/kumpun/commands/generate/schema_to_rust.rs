@@ -259,52 +259,83 @@ pub fn extract_struct_recursive(
     }
     ctx.visited.insert(name.to_string());
 
-    let Some(properties) = schema.get("properties") else {
-        return;
-    };
-    let required = schema
-        .get("required")
-        .and_then(|r| r.as_array())
-        .map(|arr| {
-            arr.iter()
-                .filter_map(|s| s.as_str())
-                .collect::<HashSet<_>>()
-        })
-        .unwrap_or_default();
-
     let mut fields = vec![];
 
-    for (key, prop) in properties.as_object().unwrap() {
-        let field_name = to_snake_case(key);
-        let is_required = required.contains(key.as_str());
-        println!("📦 field: {}", key);
-        let rust_type = infer_rust_type(
-            prop,
-            key,
-            ctx,
-            definitions,
-            resolver,
-            output_path.clone(),
-            with_docs,
-        )
-        .unwrap_or_else(|| "serde_json::Value".to_string());
+    // ✅ properties
+    if let Some(properties) = schema.get("properties") {
+        let required = schema
+            .get("required")
+            .and_then(|r| r.as_array())
+            .map(|arr| {
+                arr.iter()
+                    .filter_map(|s| s.as_str())
+                    .collect::<HashSet<_>>()
+            })
+            .unwrap_or_default();
 
-        let final_type = if is_required {
-            rust_type
-        } else {
-            format!("Option<{}>", rust_type)
-        };
+        for (key, prop) in properties.as_object().unwrap() {
+            let field_name = to_snake_case(key);
+            let is_required = required.contains(key.as_str());
 
-        if with_docs {
-            let doc_block = doc_lines_to_string_block(prop, 4);
-            if !doc_block.is_empty() {
-                fields.push(doc_block);
+            let rust_type = infer_rust_type(
+                prop,
+                key,
+                ctx,
+                definitions,
+                resolver,
+                output_path.clone(),
+                with_docs,
+            )
+            .unwrap_or_else(|| "serde_json::Value".to_string());
+
+            let final_type = if is_required {
+                rust_type
+            } else {
+                format!("Option<{}>", rust_type)
+            };
+
+            if with_docs {
+                let doc_block = doc_lines_to_string_block(prop, 4);
+                if !doc_block.is_empty() {
+                    fields.push(doc_block);
+                }
             }
-        }
 
-        fields.push(format!("    pub {}: {},", field_name, final_type));
+            fields.push(format!("    pub {}: {},", field_name, final_type));
+        }
     }
 
+    // ✅ patternProperties
+    if let Some(patterns) = schema.get("patternProperties") {
+        if let Some(pattern_map) = patterns.as_object() {
+            for (i, (pattern, pat_schema)) in pattern_map.iter().enumerate() {
+                let field_name = format!("pattern_{}", i + 1);
+                let rust_type = infer_rust_type(
+                    pat_schema,
+                    &field_name,
+                    ctx,
+                    definitions,
+                    resolver,
+                    output_path.clone(),
+                    with_docs,
+                )
+                .unwrap_or_else(|| "serde_json::Value".to_string());
+
+                let doc = if with_docs {
+                    format!("    /// Keys matching pattern: `{}`\n", pattern)
+                } else {
+                    "".to_string()
+                };
+
+                fields.push(format!(
+                    "{}    #[serde(flatten)]\n    pub {}: Option<HashMap<String, {}>>,",
+                    doc, field_name, rust_type
+                ));
+            }
+        }
+    }
+
+    // ✅ struct header + doc
     let mut struct_lines = vec![];
     if with_docs {
         if let Some(desc) = schema.get("description").and_then(|d| d.as_str()) {
