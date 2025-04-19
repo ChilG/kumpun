@@ -1,0 +1,8 @@
+{
+  "$id": "item",
+  "type": "object",
+  "properties": {
+    "name": { "type": "string" },
+    "price": { "type": "integer" }
+  }
+}

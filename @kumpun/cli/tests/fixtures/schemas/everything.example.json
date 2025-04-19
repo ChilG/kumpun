@@ -16,6 +16,12 @@
     "address": {
       "$ref": "shared/address.json"
     },
+    "gadgets": {
+      "type": "array",
+      "items": {
+        "$ref": "shared/gadget/item.json"
+      }
+    },
     "isActive": {
       "type": "boolean"
     },
