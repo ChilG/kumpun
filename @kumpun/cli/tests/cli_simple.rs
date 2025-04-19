@@ -5,7 +5,7 @@ mod setup;
 fn test_generate_rust_struct_from_schema() {
     let mut schemas: Vec<&str> = vec![];
     schemas.push("user.login");
-    setup::run_generate(schemas);
+    setup::run_generate(schemas, &[]);
 
     assert!(std::path::Path::new("tests/generated/user_login.rs").exists());
 

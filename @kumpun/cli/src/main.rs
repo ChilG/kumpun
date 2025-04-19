@@ -18,6 +18,7 @@ fn main() {
             target,
             schema_dir,
             out_dir,
-        } => commands::generate::run(schema, target, schema_dir, out_dir),
+            with_docs,
+        } => commands::generate::run(schema, target, schema_dir, out_dir, with_docs),
     }
 }

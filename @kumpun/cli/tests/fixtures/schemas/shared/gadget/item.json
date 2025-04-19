@@ -2,7 +2,13 @@
   "$id": "item",
   "type": "object",
   "properties": {
-    "name": { "type": "string" },
-    "price": { "type": "integer" }
+    "name": {
+      "type": "string",
+      "description": "The official name of the gadget"
+    },
+    "price": {
+      "type": "integer",
+      "description": "The price of the gadget in the smallest currency unit (e.g., cents)"
+    }
   }
 }

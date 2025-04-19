@@ -7,7 +7,7 @@ fn test_mod_rs_generated() {
     schemas.push("everything.example");
     schemas.push("main.schema");
     schemas.push("user.login");
-    setup::run_generate(schemas);
+    setup::run_generate(schemas, &[]);
 
     assert!(std::path::Path::new("tests/generated/mod.rs").exists());
     let root_mod = common::read("tests/generated/mod.rs");

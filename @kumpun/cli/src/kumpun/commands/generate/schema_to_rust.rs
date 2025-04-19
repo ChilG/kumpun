@@ -156,6 +156,7 @@ pub fn generate_rust_structs_from_schema(
     root_name: &str,
     schema: &Value,
     resolver: &mut RefResolver,
+    with_docs: &bool,
 ) -> Vec<NamedStruct> {
     let mut structs = vec![];
     let mut visited = HashSet::new();
@@ -170,6 +171,7 @@ pub fn generate_rust_structs_from_schema(
         &definitions,
         resolver,
         None,
+        *with_docs,
     );
 
     let mut use_lines = vec![];
@@ -228,6 +230,7 @@ fn extract_struct_recursive(
     definitions: &Value,
     resolver: &mut RefResolver,
     output_path: Option<String>,
+    with_docs: bool,
 ) {
     println!("📦 Generated: {} → {:?}", name, output_path);
     if visited.contains(name) {
@@ -262,6 +265,7 @@ fn extract_struct_recursive(
             definitions,
             resolver,
             output_path.clone(),
+            with_docs,
         )
         .unwrap_or_else(|| "serde_json::Value".to_string());
 
@@ -271,18 +275,31 @@ fn extract_struct_recursive(
             format!("Option<{}>", rust_type)
         };
 
-        if let Some(desc) = prop.get("description").and_then(|d| d.as_str()) {
-            fields.push(format!("    /// {}", desc));
+        if with_docs {
+            if let Some(desc) = prop.get("description").and_then(|d| d.as_str()) {
+                fields.push(format!("    /// {}", desc));
+            }
         }
 
         fields.push(format!("    pub {}: {},", field_name, final_type));
     }
 
-    let struct_code = format!(
+    let mut struct_lines = vec![];
+    if with_docs {
+        if let Some(desc) = schema.get("description").and_then(|d| d.as_str()) {
+            struct_lines.push(format!("/// {}", desc));
+        } else if let Some(title) = schema.get("title").and_then(|t| t.as_str()) {
+            struct_lines.push(format!("/// {}", title));
+        }
+    }
+
+    struct_lines.push(format!(
         "#[derive(Debug, Serialize, Deserialize)]\npub struct {} {{\n{}\n}}",
         name,
         fields.join("\n")
-    );
+    ));
+
+    let struct_code = struct_lines.join("\n");
 
     output.push(NamedStruct {
         name: name.to_string(),
@@ -299,6 +316,7 @@ fn infer_rust_type(
     definitions: &Value,
     resolver: &mut RefResolver,
     output_path: Option<String>,
+    with_docs: bool,
 ) -> Option<String> {
     println!("🧪 infer_rust_type: key = {}, prop = {}", key, prop);
     if let Some(ref_val) = prop.get("$ref").and_then(|v| v.as_str()) {
@@ -314,6 +332,7 @@ fn infer_rust_type(
                 definitions,
                 resolver,
                 output_path.clone(),
+                with_docs,
             );
             Some(name)
         } else {
@@ -333,6 +352,7 @@ fn infer_rust_type(
                 &Value::Null,
                 resolver,
                 ref_output_path.clone(),
+                with_docs,
             );
             Some(name)
         };
@@ -347,6 +367,7 @@ fn infer_rust_type(
             definitions,
             resolver,
             output_path.clone(),
+            with_docs,
         );
     }
     if let Some(any_of) = prop.get("anyOf") {
@@ -358,6 +379,7 @@ fn infer_rust_type(
             definitions,
             resolver,
             output_path.clone(),
+            with_docs,
         );
     }
     if let Some(all_of) = prop.get("allOf") {
@@ -369,6 +391,7 @@ fn infer_rust_type(
             definitions,
             resolver,
             output_path.clone(),
+            with_docs,
         );
     }
 
@@ -410,6 +433,7 @@ fn infer_rust_type(
                 definitions,
                 resolver,
                 output_path.clone(),
+                with_docs,
             )?;
             Some(format!("Vec<{}>", inner))
         }
@@ -423,6 +447,7 @@ fn infer_rust_type(
                     definitions,
                     resolver,
                     output_path.clone(),
+                    with_docs,
                 )
                 .unwrap_or_else(|| "serde_json::Value".to_string());
                 return Some(format!("Option<HashMap<String, {}>>", inner_type));
@@ -438,6 +463,7 @@ fn infer_rust_type(
                     definitions,
                     resolver,
                     output_path.clone(),
+                    with_docs,
                 );
                 return Some(sub_name);
             }
@@ -471,6 +497,7 @@ fn handle_one_of(
     definitions: &Value,
     resolver: &mut RefResolver,
     output_path: Option<String>,
+    with_docs: bool,
 ) -> Option<String> {
     let enum_name = to_pascal_case(key);
     let mut variants = vec![];
@@ -485,11 +512,7 @@ fn handle_one_of(
         let struct_name = format!("{}{}", enum_name, &title);
 
         if variant.get("type") == Some(&Value::String("object".into())) {
-            let mut struct_fields = vec![];
-
-            if let Some(desc) = variant.get("description").and_then(|d| d.as_str()) {
-                struct_fields.push(format!("/// {}", desc));
-            }
+            let comment_line = variant.get("description").and_then(|d| d.as_str());
 
             extract_struct_recursive(
                 &struct_name,
@@ -500,15 +523,24 @@ fn handle_one_of(
                 definitions,
                 resolver,
                 output_path.clone(),
+                with_docs,
             );
 
             if let Some(last) = output.last_mut() {
-                if last.name == struct_name && !struct_fields.is_empty() {
-                    last.code = format!("{}\n{}", struct_fields.join("\n"), last.code);
+                if last.name == struct_name {
+                    last.code = format!("{}", last.code);
                 }
             }
 
-            variants.push(format!("    {}({}),", title, struct_name));
+            if with_docs {
+                if let Some(desc) = comment_line {
+                    variants.push(format!("    /// {}\n    {}({}),", desc, title, struct_name));
+                } else {
+                    variants.push(format!("    {}({}),", title, struct_name));
+                }
+            } else {
+                variants.push(format!("    {}({}),", title, struct_name));
+            }
         } else {
             let inner_type = infer_rust_type(
                 variant,
@@ -518,6 +550,7 @@ fn handle_one_of(
                 definitions,
                 resolver,
                 output_path.clone(),
+                with_docs,
             )
             .unwrap_or_else(|| "serde_json::Value".to_string());
             variants.push(format!("    {}({}),", title, inner_type));
@@ -525,9 +558,6 @@ fn handle_one_of(
     }
 
     let mut lines = vec![];
-    if let Some(comment) = extract_top_description(one_of) {
-        lines.push(comment);
-    }
     lines.push(format!(
         "#[derive(Debug, Serialize, Deserialize)]\n#[serde(tag = \"type\")]\npub enum {} {{\n{}\n}}",
         enum_name,
@@ -551,6 +581,7 @@ fn handle_any_of(
     definitions: &Value,
     resolver: &mut RefResolver,
     output_path: Option<String>,
+    with_docs: bool,
 ) -> Option<String> {
     let enum_name = to_pascal_case(key);
     let mut variants = vec![];
@@ -566,16 +597,21 @@ fn handle_any_of(
             definitions,
             resolver,
             output_path.clone(),
+            with_docs,
         )
         .unwrap_or_else(|| "serde_json::Value".to_string());
 
         let comment_line = variant.get("description").and_then(|d| d.as_str());
 
-        if let Some(desc) = comment_line {
-            variants.push(format!(
-                "    /// {}\n    {}({}),",
-                desc, var_name, inner_type
-            ));
+        if with_docs {
+            if let Some(desc) = comment_line {
+                variants.push(format!(
+                    "    /// {}\n    {}({}),",
+                    desc, var_name, inner_type
+                ));
+            } else {
+                variants.push(format!("    {}({}),", var_name, inner_type));
+            }
         } else {
             variants.push(format!("    {}({}),", var_name, inner_type));
         }
@@ -605,6 +641,7 @@ fn handle_all_of(
     definitions: &Value,
     resolver: &mut RefResolver,
     output_path: Option<String>,
+    with_docs: bool,
 ) -> Option<String> {
     let main_struct_name = to_pascal_case(key);
     let mut field_lines = vec![];
@@ -612,8 +649,10 @@ fn handle_all_of(
     for (i, schema_part) in all_of.as_array()?.iter().enumerate() {
         let part_name = format!("{}Part{}", main_struct_name, i + 1);
 
-        if let Some(desc) = schema_part.get("description").and_then(|d| d.as_str()) {
-            field_lines.push(format!("    /// {}", desc));
+        if with_docs {
+            if let Some(desc) = schema_part.get("description").and_then(|d| d.as_str()) {
+                field_lines.push(format!("    /// {}", desc));
+            }
         }
 
         extract_struct_recursive(
@@ -625,6 +664,7 @@ fn handle_all_of(
             definitions,
             resolver,
             output_path.clone(),
+            with_docs,
         );
 
         field_lines.push(format!(
@@ -635,8 +675,10 @@ fn handle_all_of(
     }
 
     let mut struct_lines = vec![];
-    if let Some(comment) = extract_top_description(all_of) {
-        struct_lines.push(comment);
+    if with_docs {
+        if let Some(comment) = extract_top_description(all_of) {
+            struct_lines.push(comment);
+        }
     }
     struct_lines.push(format!(
         "#[derive(Debug, Serialize, Deserialize)]\npub struct {} {{\n{}\n}}",

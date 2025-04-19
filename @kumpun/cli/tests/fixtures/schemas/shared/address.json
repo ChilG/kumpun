@@ -2,7 +2,13 @@
   "$id": "address",
   "type": "object",
   "properties": {
-    "city": { "type": "string" },
-    "zip": { "type": "string" }
+    "city": {
+      "type": "string",
+      "description": "The name of the city where the user resides"
+    },
+    "zip": {
+      "type": "string",
+      "description": "Postal code associated with the user's address"
+    }
   }
 }

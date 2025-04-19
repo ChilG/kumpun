@@ -25,5 +25,8 @@ pub enum Commands {
 
         #[arg(long, default_value = "generated")]
         out_dir: String,
+
+        #[arg(long)]
+        with_docs: bool,
     },
 }
