@@ -188,6 +188,7 @@ dependencies = [
  "kumpun-core",
  "kumpun-schema",
  "predicates",
+ "serde",
  "serde_json",
 ]
 

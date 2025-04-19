@@ -6,13 +6,13 @@ use std::fs;
 fn test_generate_struct_from_everything_schema() {
     // 1. เตรียม schema ไฟล์
     let schema_dir = "tests/fixtures/schemas";
-    let out_dir = "tests/generated";
+    let out_dir = "src/generated";
     let schema = include_str!("../tests/fixtures/schemas/everything.example.json");
-    fs::create_dir_all("tests/fixtures/schemas").unwrap();
-    fs::create_dir_all("tests/generated").unwrap();
+    fs::create_dir_all(schema_dir).unwrap();
+    fs::create_dir_all(out_dir).unwrap();
     fs::write("tests/fixtures/schemas/everything.example.json", schema).unwrap();
     // 2. ลบไฟล์เดิมที่ generate แล้ว (เพื่อความสะอาด)
-    let _ = fs::remove_file("tests/generated/everything.example.rs");
+    let _ = fs::remove_file("tests/generated/everything_example");
 
     // 3. เรียก CLI generate
     let mut cmd = Command::cargo_bin("kumpun-cli").unwrap();
@@ -32,7 +32,7 @@ fn test_generate_struct_from_everything_schema() {
     .stdout(contains("✅ Stub generated"));
 
     // 4. ตรวจสอบ output file ถูกสร้าง
-    let output = fs::read_to_string("tests/generated/everything.example.rs")
+    let output = fs::read_to_string("src/generated/everything_example.rs")
         .expect("generated file not found");
 
     // 5. ตรวจว่า struct สำคัญถูก generate มาครบ

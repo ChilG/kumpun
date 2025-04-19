@@ -1,3 +1,5 @@
+use serde::{Deserialize, Serialize};
+
 use std::collections::HashMap;
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -34,8 +36,8 @@ pub struct Address {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Profile {
     pub address: Option<Address>,
-    pub firstName: String,
-    pub lastName: String,
+    pub first_name: String,
+    pub last_name: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -73,11 +75,11 @@ pub struct EverythingExample {
     pub age: Option<i32>,
     pub id: String,
     pub identifier: Option<Identifier>,
-    pub isActive: Option<bool>,
+    pub is_active: Option<bool>,
     pub meta: Option<HashMap<String, String>>,
     pub preferences: Option<Preferences>,
     pub profile: Profile,
-    pub refExample: Option<NestedRef>,
+    pub ref_example: Option<NestedRef>,
     pub settings: Option<Settings>,
     pub status: Status,
     pub tags: Vec<String>,

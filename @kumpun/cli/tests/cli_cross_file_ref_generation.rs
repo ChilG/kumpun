@@ -5,11 +5,11 @@ use std::fs;
 #[test]
 fn test_cross_file_ref_generation() {
     let schema_dir = "tests/fixtures/schemas";
-    let out_dir = "tests/generated";
-    let out_main_path = "tests/generated/main.schema.rs";
-    let out_shared_address_path = "tests/generated/shared/address.rs";
+    let out_dir = "src/generated";
+    let out_main_path = "src/generated/main_schema.rs";
+    let out_shared_address_path = "src/generated/shared/address.rs";
 
-    fs::create_dir_all("tests/generated").unwrap();
+    fs::create_dir_all(out_dir).unwrap();
 
     let mut cmd = Command::cargo_bin("kumpun-cli").unwrap();
     cmd.args([

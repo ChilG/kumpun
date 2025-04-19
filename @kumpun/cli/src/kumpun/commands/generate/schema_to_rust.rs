@@ -62,36 +62,91 @@ impl RefResolver {
 
 pub fn write_named_structs(structs: &[NamedStruct], out_dir: &str, root_name: &str) {
     let mut root_code = vec![];
+    let mut root_needs_serde = false;
 
     for s in structs {
         println!("🧾 writing {} → {:?}", s.name, s.output_path);
         match &s.output_path {
             Some(path_hint) => {
-                let full_path = Path::new(out_dir).join(format!("{}.rs", path_hint));
+                let snake_case_path = to_snake_case(path_hint);
+                let full_path = Path::new(out_dir).join(format!("{}.rs", snake_case_path));
                 let parent = full_path.parent().unwrap();
                 fs::create_dir_all(parent).expect("Failed to create output directory");
 
                 let mut file = fs::File::create(&full_path).expect("Failed to create output file");
-                file.write_all(s.code.as_bytes()).expect("Write failed");
 
+                let code = if s.code.contains("Serialize") || s.code.contains("Deserialize") {
+                    format!("use serde::{{Deserialize, Serialize}};\n\n{}", s.code)
+                } else {
+                    s.code.clone()
+                };
+
+                file.write_all(code.as_bytes()).expect("Write failed");
                 println!("✅ Generated: {}", full_path.display());
             }
             None => {
+                if s.code.contains("Serialize") || s.code.contains("Deserialize") {
+                    root_needs_serde = true;
+                }
                 root_code.push(s.code.as_str());
             }
         }
     }
 
-    let full_path = Path::new(out_dir).join(format!("{}.rs", root_name));
+    let full_path = Path::new(out_dir).join(format!("{}.rs", to_snake_case(root_name)));
     let parent = full_path.parent().unwrap();
     fs::create_dir_all(parent).expect("Failed to create output directory");
 
     let mut file = fs::File::create(&full_path).expect("Failed to write root output");
-    let joined = root_code.join("\n\n");
+
+    let mut joined = String::new();
+    if root_needs_serde {
+        joined.push_str("use serde::{Deserialize, Serialize};\n\n");
+    }
+    joined.push_str(&root_code.join("\n\n"));
+
     file.write_all(joined.as_bytes())
         .expect("Root write failed");
 
     println!("✅ Stub generated: {}", full_path.display());
+
+    // 🔧 NEW: Generate mod.rs files for all subfolders
+    generate_mod_rs_recursively(Path::new(out_dir)).expect("Failed to generate mod.rs files");
+}
+
+fn generate_mod_rs_recursively(dir: &Path) -> std::io::Result<()> {
+    if !dir.is_dir() {
+        return Ok(());
+    }
+
+    let mut mod_lines = vec![];
+    for entry in fs::read_dir(dir)? {
+        let entry = entry?;
+        let path = entry.path();
+
+        if path.is_dir() {
+            generate_mod_rs_recursively(&path)?;
+            if path.join("mod.rs").exists() {
+                mod_lines.push(format!("pub mod {};", path.file_name().unwrap().to_str().unwrap()));
+            }
+        } else if path.is_file() {
+            if let Some(name) = path.file_stem().and_then(|n| n.to_str()) {
+                if name != "mod" && path.extension().map_or(false, |e| e == "rs") {
+                    mod_lines.push(format!("pub mod {};", name));
+                }
+            }
+        }
+    }
+
+    mod_lines.sort();
+    mod_lines.dedup();
+
+    let mod_path = dir.join("mod.rs");
+    let content = mod_lines.join("\n") + "\n";
+    fs::write(&mod_path, content)?;
+    println!("📦 mod.rs generated: {}", mod_path.display());
+
+    Ok(())
 }
 
 pub fn generate_rust_structs_from_schema(
@@ -118,25 +173,42 @@ pub fn generate_rust_structs_from_schema(
     for s in &structs {
         let is_root_file = s.output_path.is_none() || s.output_path.as_deref() == Some(root_name);
         if (s.output_path.is_none() || is_root_file) && s.code.contains("HashMap<") {
-            use_lines.push("use std::collections::HashMap;");
+            use_lines.push("use std::collections::HashMap;".to_string());
         }
     }
 
     use_lines.sort();
     use_lines.dedup();
 
-    for (i, line) in use_lines.into_iter().rev().enumerate() {
+    let mut import_uses = vec![];
+    for s in &structs {
+        if let Some(ref path) = s.output_path {
+            if path != root_name {
+                let mod_path = format!("generated::{}", path.replace('/', "::"));
+                import_uses.push(format!("use crate::{}::{};", mod_path, s.name));
+            }
+        }
+    }
+
+    import_uses.sort();
+    import_uses.dedup();
+
+    for (i, line) in import_uses
+        .into_iter()
+        .chain(use_lines.into_iter())
+        .rev()
+        .enumerate()
+    {
         structs.insert(
             0,
             NamedStruct {
                 name: format!("__use_{}", i),
-                code: line.to_string(),
-                output_path: None, // ✅ เขียนรวมกับ root เท่านั้น
+                code: line,
+                output_path: None,
             },
         );
     }
 
-    // ด้านล่างสุดก่อน write_named_structs
     for s in &structs {
         println!("🧾 {} → {:?}", s.name, s.output_path);
     }
@@ -176,19 +248,19 @@ fn extract_struct_recursive(
     let mut fields = vec![];
 
     for (key, prop) in properties.as_object().unwrap() {
-        let field_name = key.as_str();
-        let is_required = required.contains(field_name);
-        println!("📦 field: {}", key); // ก่อนเรียก infer_rust_type
+        let field_name = to_snake_case(key);
+        let is_required = required.contains(key.as_str());
+        println!("📦 field: {}", key);
         let rust_type = infer_rust_type(
             prop,
-            field_name,
+            key,
             output,
             visited,
             definitions,
             resolver,
             output_path.clone(),
         )
-        .unwrap_or_else(|| "serde_json::Value".to_string());
+            .unwrap_or_else(|| "serde_json::Value".to_string());
 
         let final_type = if is_required {
             rust_type
@@ -514,6 +586,25 @@ fn handle_all_of(
     });
 
     Some(main_struct_name)
+}
+
+pub fn to_snake_case(name: &str) -> String {
+    let mut snake = String::new();
+    for (i, ch) in name.chars().enumerate() {
+        if ch.is_uppercase() {
+            if i != 0 {
+                snake.push('_');
+            }
+            for c in ch.to_lowercase() {
+                snake.push(c);
+            }
+        } else if ch == '.' || ch == '-' {
+            snake.push('_');
+        } else {
+            snake.push(ch);
+        }
+    }
+    snake
 }
 
 pub fn to_pascal_case(name: &str) -> String {

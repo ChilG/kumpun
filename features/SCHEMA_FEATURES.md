@@ -34,10 +34,19 @@
 
 ## 🔧 Code Output
 - ✅ auto import: `HashMap`
+- ✅ auto import: `use serde::{Deserialize, Serialize}` when needed
+- ✅ generated filenames in `snake_case`
+- ✅ struct field names in `snake_case`
+- ✅ auto-generate `mod.rs` with `pub mod` declarations
+- ✅ root `use` paths prefixed with `crate::generated::...`
 - ❌ auto import: `chrono`, `uuid`, etc.
 
 ## 🧪 Next Steps
 - [x] Implement `RefResolver` for cross-file `$ref`
+- [x] Generate `mod.rs` recursively
+- [x] Prefix `crate::generated::...` for imports
+- [x] Convert filenames and fields to `snake_case`
+- [x] Insert `use serde::{Deserialize, Serialize}` when required
 - [ ] Support `patternProperties` → `HashMap` + regex
 - [ ] Annotate doc/comments from `description`
 - [ ] Generate test stubs or `impl` blocks (future idea)
@@ -51,4 +60,3 @@
 - [x] Nested struct recursion
 - [x] additionalProperties as HashMap
 - [x] `$ref` cross-file
-
