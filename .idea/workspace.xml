@@ -18,11 +18,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="07f3844c-b908-4138-89c2-b79add2c64e8" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/@kumpun/cli/tests/cli_validation_test.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/@kumpun/cli/tests/fixtures/schemas/validation.schema.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/generate/schema_to_rust.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/generate/schema_to_rust.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/cli_pattern_properties.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/tests/cli_pattern_properties.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/fixtures/schemas/pattern.schema.json" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/tests/fixtures/schemas/pattern.schema.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/SCHEMA_FEATURES.md" beforeDir="false" afterPath="$PROJECT_DIR$/features/SCHEMA_FEATURES.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,101 +57,103 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Cargo.Build `Run kumpun-cli generate`.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Build `Run kumpun-cli`.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Build `Test All`.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Build `Test test_generate_rust_struct_from_schema`.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Build `Test test_generate_struct_from_everything_schema`.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Build kumpun_core.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Build kumpun_schema.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Install cargo-llvm-cov.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Run kumpun-cli (1).executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Run kumpun-cli dev.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Run kumpun-cli generate.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Run kumpun-cli run.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Run kumpun-cli.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test All.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test cli_comment_doc_test.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test cli_cross_file_ref.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test cli_everything.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test cli_integration.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test cli_mod_rs_test.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test cli_pattern_properties.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test cli_serde_use_test.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test cli_simple.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test cli_snake_case_test.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test common.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test setup.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test test_cross_file_ref_generation (1).executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test test_cross_file_ref_generation.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test test_generate_rust_struct_from_schema (1).executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test test_generate_rust_struct_from_schema.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test test_generate_struct_from_everything_schema.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test test_mod_rs_generated.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test test_pattern_properties_generation.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test test_serde_use_added.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test test_snake_case_filename_and_fields.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test test_struct_field_doc_comments_are_generated.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.test.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.rust.reset.selective.auto.import&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/kumpun&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
-    &quot;org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon&quot;: &quot;&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/generated/everything.example.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/generated/everything_example.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/generated/main.schema.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/generated/main_schema.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/generated/shared/address.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/generated/shared/mod.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/generated/user.login.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/generated/user_login.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/kumpun/everything.example.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/kumpun/generate.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/kumpun/generate/schema_to_rust.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/kumpun/utils/logger.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/EverythingExample.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/cli_generate_ref_croos_files.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/everything.example.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/everything_example.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/main.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/main.schema.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/main_schema.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/pattern_schema.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/shared/address.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/shared/mod.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/user.login.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/args/cli.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/commands/check.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/commands/dev.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/commands/docs.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/commands/generate.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/commands/lib.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/kumpun/args.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/kumpun/commands.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/mod/args.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/mod/commands.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/test/cli.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/tests/cli_integration.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.first.attach.projects&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;language.rust.cargo.check&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/chilgoe/Applications/RustRover.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Cargo.Build `Run kumpun-cli generate`.executor": "Run",
+    "Cargo.Build `Run kumpun-cli`.executor": "Run",
+    "Cargo.Build `Test All`.executor": "Run",
+    "Cargo.Build `Test test_generate_rust_struct_from_schema`.executor": "Run",
+    "Cargo.Build `Test test_generate_struct_from_everything_schema`.executor": "Run",
+    "Cargo.Build kumpun_core.executor": "Run",
+    "Cargo.Build kumpun_schema.executor": "Run",
+    "Cargo.Install cargo-llvm-cov.executor": "Run",
+    "Cargo.Run kumpun-cli (1).executor": "Run",
+    "Cargo.Run kumpun-cli dev.executor": "Run",
+    "Cargo.Run kumpun-cli generate.executor": "Run",
+    "Cargo.Run kumpun-cli run.executor": "Run",
+    "Cargo.Run kumpun-cli.executor": "Run",
+    "Cargo.Test All.executor": "Run",
+    "Cargo.Test cli_comment_doc_test.executor": "Run",
+    "Cargo.Test cli_cross_file_ref.executor": "Run",
+    "Cargo.Test cli_everything.executor": "Run",
+    "Cargo.Test cli_integration.executor": "Run",
+    "Cargo.Test cli_mod_rs_test.executor": "Run",
+    "Cargo.Test cli_pattern_properties.executor": "Run",
+    "Cargo.Test cli_serde_use_test.executor": "Run",
+    "Cargo.Test cli_simple.executor": "Run",
+    "Cargo.Test cli_snake_case_test.executor": "Run",
+    "Cargo.Test common.executor": "Run",
+    "Cargo.Test setup.executor": "Run",
+    "Cargo.Test test_cross_file_ref_generation (1).executor": "Run",
+    "Cargo.Test test_cross_file_ref_generation.executor": "Run",
+    "Cargo.Test test_generate_rust_struct_from_schema (1).executor": "Run",
+    "Cargo.Test test_generate_rust_struct_from_schema.executor": "Run",
+    "Cargo.Test test_generate_struct_from_everything_schema.executor": "Run",
+    "Cargo.Test test_generate_validation_schema.executor": "Run",
+    "Cargo.Test test_mod_rs_generated.executor": "Run",
+    "Cargo.Test test_pattern_properties_generation.executor": "Run",
+    "Cargo.Test test_serde_use_added.executor": "Run",
+    "Cargo.Test test_snake_case_filename_and_fields.executor": "Run",
+    "Cargo.Test test_struct_field_doc_comments_are_generated.executor": "Run",
+    "Cargo.test.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.rust.reset.selective.auto.import": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
+    "org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon": "",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/generated/everything.example.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/generated/everything_example.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/generated/main.schema.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/generated/main_schema.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/generated/shared/address.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/generated/shared/mod.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/generated/user.login.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/generated/user_login.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/kumpun/everything.example.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/kumpun/generate.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/kumpun/generate/schema_to_rust.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/kumpun/utils/logger.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/EverythingExample.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/cli_generate_ref_croos_files.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/everything.example.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/everything_example.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/main.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/main.schema.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/main_schema.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/pattern_schema.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/shared/address.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/shared/mod.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/user.login.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/validation_schema.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/args/cli.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/commands/check.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/commands/dev.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/commands/docs.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/commands/generate.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/commands/lib.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/kumpun/args.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/kumpun/commands.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/mod/args.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/mod/commands.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/test/cli.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/cli/src/tests/cli_integration.rs": "true",
+    "org.rust.first.attach.projects": "true",
+    "settings.editor.selected.configurable": "language.rust.cargo.check",
+    "ts.external.directory.path": "/Users/chilgoe/Applications/RustRover.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/@kumpun/cli/src/kumpun" />
       <recent name="$PROJECT_DIR$/@kumpun/cli/tests" />
+      <recent name="$PROJECT_DIR$/@kumpun/cli/src/kumpun" />
       <recent name="$PROJECT_DIR$/@kumpun/cli/src" />
       <recent name="$PROJECT_DIR$/@kumpun/cli/tests/fixtures/schemas/shared/gadget" />
       <recent name="$PROJECT_DIR$/@kumpun/cli/src/generated" />
@@ -168,25 +169,7 @@
   <component name="RsExternalLinterProjectSettings">
     <option name="runOnTheFly" value="true" />
   </component>
-  <component name="RunManager" selected="Cargo.Test test_pattern_properties_generation">
-    <configuration name="Run kumpun-cli" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
-      <option name="buildProfileId" value="dev" />
-      <option name="command" value="run --package kumpun-cli --bin kumpun-cli" />
-      <option name="workingDirectory" value="file://$PROJECT_DIR$/@kumpun" />
-      <envs />
-      <option name="emulateTerminal" value="true" />
-      <option name="channel" value="DEFAULT" />
-      <option name="requiredFeatures" value="true" />
-      <option name="allFeatures" value="false" />
-      <option name="withSudo" value="false" />
-      <option name="buildTarget" value="REMOTE" />
-      <option name="backtrace" value="SHORT" />
-      <option name="isRedirectInput" value="false" />
-      <option name="redirectInputPath" value="" />
-      <method v="2">
-        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager">
     <configuration name="Test All" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
       <option name="buildProfileId" value="test" />
       <option name="command" value="test --package kumpun-cli" />
@@ -205,33 +188,9 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Test test_pattern_properties_generation" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
-      <option name="command" value="test --package kumpun-cli --test cli_pattern_properties test_pattern_properties_generation -- --exact" />
-      <option name="workingDirectory" value="file://$PROJECT_DIR$/@kumpun" />
-      <envs />
-      <option name="emulateTerminal" value="true" />
-      <option name="channel" value="DEFAULT" />
-      <option name="requiredFeatures" value="true" />
-      <option name="allFeatures" value="false" />
-      <option name="withSudo" value="false" />
-      <option name="buildTarget" value="REMOTE" />
-      <option name="backtrace" value="SHORT" />
-      <option name="isRedirectInput" value="false" />
-      <option name="redirectInputPath" value="" />
-      <method v="2">
-        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
-      </method>
-    </configuration>
-    <list>
-      <item itemvalue="Cargo.Run kumpun-cli" />
-      <item itemvalue="Cargo.Test test_pattern_properties_generation" />
-      <item itemvalue="Cargo.Test All" />
-    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Cargo.Test test_pattern_properties_generation" />
         <item itemvalue="Cargo.Test All" />
-        <item itemvalue="Cargo.Run kumpun-cli" />
       </list>
     </recent_temporary>
   </component>
@@ -254,7 +213,7 @@
       <workItem from="1744985502676" duration="82000" />
       <workItem from="1744985589293" duration="22080000" />
       <workItem from="1745052668149" duration="20194000" />
-      <workItem from="1746266143791" duration="1511000" />
+      <workItem from="1746266143791" duration="3170000" />
     </task>
     <servers />
   </component>

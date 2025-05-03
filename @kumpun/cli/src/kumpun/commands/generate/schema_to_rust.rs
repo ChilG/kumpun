@@ -97,7 +97,11 @@ pub fn write_named_structs(structs: &[NamedStruct], out_dir: &str, root_name: &s
                 let mut file = fs::File::create(&full_path).expect("Failed to create output file");
 
                 let code = if s.code.contains("Serialize") || s.code.contains("Deserialize") {
-                    format!("use serde::{{Deserialize, Serialize}};\n\n{}", s.code)
+                    let mut prelude = vec!["use serde::{Deserialize, Serialize};".to_string()];
+                    if s.code.contains("Validate") {
+                        prelude.push("use validator::Validate;".to_string());
+                    }
+                    format!("{}\n\n{}", prelude.join("\n"), s.code)
                 } else {
                     s.code.clone()
                 };
@@ -294,7 +298,7 @@ pub fn extract_struct_recursive(
             .unwrap_or_else(|| "serde_json::Value".to_string());
 
             let final_type = if is_required {
-                rust_type
+                rust_type.clone()
             } else {
                 format!("Option<{}>", rust_type)
             };
@@ -303,6 +307,12 @@ pub fn extract_struct_recursive(
                 let doc_block = doc_lines_to_string_block(prop, 4);
                 if !doc_block.is_empty() {
                     fields.push(doc_block);
+                }
+            }
+
+            if with_validation {
+                if let Some(validate_line) = generate_validation_attribute(prop, &rust_type) {
+                    fields.push(format!("    {}", validate_line));
                 }
             }
 
@@ -380,11 +390,13 @@ pub fn extract_struct_recursive(
         }
     }
 
-    struct_lines.push(format!(
-        "#[derive(Debug, Serialize, Deserialize)]\npub struct {} {{\n{}\n}}",
-        name,
-        fields.join("\n")
-    ));
+    if with_validation {
+        struct_lines.push("#[derive(Debug, Serialize, Deserialize, Validate)]".to_string());
+    } else {
+        struct_lines.push("#[derive(Debug, Serialize, Deserialize)]".to_string());
+    }
+
+    struct_lines.push(format!("pub struct {} {{\n{}\n}}", name, fields.join("\n")));
 
     let struct_code = struct_lines.join("\n");
 
@@ -568,6 +580,55 @@ pub fn infer_rust_type(
             Some("serde_json::Value".to_string())
         }
         _ => Some("serde_json::Value".to_string()),
+    }
+}
+
+fn generate_validation_attribute(schema: &Value, rust_type: &str) -> Option<String> {
+    let mut validations = vec![];
+
+    // String-specific
+    if rust_type == "String" {
+        if let Some(min) = schema.get("minLength").and_then(|v| v.as_u64()) {
+            validations.push(format!("length(min = {})", min));
+        }
+        if let Some(max) = schema.get("maxLength").and_then(|v| v.as_u64()) {
+            validations.push(format!("length(max = {})", max));
+        }
+        if let Some(pattern) = schema.get("pattern").and_then(|v| v.as_str()) {
+            validations.push(format!(
+                "regex(path = r\"{}\")",
+                pattern.replace('"', "\\\"")
+            ));
+        }
+        if let Some(format_val) = schema.get("format").and_then(|v| v.as_str()) {
+            match format_val {
+                "email" => validations.push("email".to_string()),
+                "url" | "uri" => validations.push("url".to_string()),
+                "uuid" => validations.push("uuid".to_string()),
+                _ => {}
+            }
+        }
+    }
+
+    // Number/integer
+    if rust_type == "i32" || rust_type == "f64" {
+        let min = schema.get("minimum").and_then(|v| v.as_f64());
+        let max = schema.get("maximum").and_then(|v| v.as_f64());
+
+        match (min, max) {
+            (Some(min), Some(max)) => {
+                validations.push(format!("range(min = {}, max = {})", min, max))
+            }
+            (Some(min), None) => validations.push(format!("range(min = {})", min)),
+            (None, Some(max)) => validations.push(format!("range(max = {})", max)),
+            _ => {}
+        }
+    }
+
+    if !validations.is_empty() {
+        Some(format!("#[validate({})]", validations.join(", ")))
+    } else {
+        None
     }
 }
 
