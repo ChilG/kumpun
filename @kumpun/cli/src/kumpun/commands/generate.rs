@@ -13,14 +13,7 @@ pub fn init() {
     log_debug!("🛠️ [generate] stub generator module initialized");
 }
 
-pub fn run(
-    schema: &str,
-    target: &str,
-    schema_dir: &str,
-    out_dir: &str,
-    with_docs: &bool,
-    with_validation: &bool,
-) {
+pub fn run(schema: &str, target: &str, schema_dir: &str, out_dir: &str, with_docs: &bool) {
     log_debug!(
         "🛠️ Generating for schema: '{}', target: '{}'",
         schema,
@@ -43,14 +36,7 @@ pub fn run(
 
     match target {
         "typescript" => generate_typescript_stub(schema, &schema_str, out_dir),
-        "rust" => generate_rust_stub(
-            schema,
-            schema_dir,
-            &schema_str,
-            out_dir,
-            with_docs,
-            with_validation,
-        ),
+        "rust" => generate_rust_stub(schema, schema_dir, &schema_str, out_dir, with_docs),
         _ => {
             log_error!("❌ Unsupported target: {}", target);
             std::process::exit(1);
@@ -89,7 +75,6 @@ fn generate_rust_stub(
     schema_str: &str,
     out_dir: &str,
     with_docs: &bool,
-    with_validation: &bool,
 ) {
     // 1. Parse schema
     let schema: serde_json::Value = serde_json::from_str(schema_str).expect("Invalid JSON Schema");
@@ -101,13 +86,8 @@ fn generate_rust_stub(
     let mut resolver = RefResolver::new(schema_dir);
 
     // 4. Generate all structs
-    let structs = generate_rust_structs_from_schema(
-        &root_struct_name,
-        &schema,
-        &mut resolver,
-        with_docs,
-        with_validation,
-    );
+    let structs =
+        generate_rust_structs_from_schema(&root_struct_name, &schema, &mut resolver, with_docs);
 
     // 5. Write all structs to files
     write_named_structs(&structs, out_dir, schema_name);
