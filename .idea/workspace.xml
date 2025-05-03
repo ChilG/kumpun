@@ -19,10 +19,10 @@
   <component name="ChangeListManager">
     <list default="true" id="07f3844c-b908-4138-89c2-b79add2c64e8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/args/cli.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/args/cli.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/generate.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/generate.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/generate/schema_to_rust.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/generate/schema_to_rust.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/cli_validation_test.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/fixtures/schemas/validation.schema.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/features/SCHEMA_FEATURES.md" beforeDir="false" afterPath="$PROJECT_DIR$/features/SCHEMA_FEATURES.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,7 +99,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.rust.reset.selective.auto.import": "true",
-    "git-widget-placeholder": "419dd571",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/kumpun",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -168,25 +168,7 @@
   <component name="RsExternalLinterProjectSettings">
     <option name="runOnTheFly" value="true" />
   </component>
-  <component name="RunManager" selected="Cargo.Test All">
-    <configuration name="Run kumpun-cli" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
-      <option name="buildProfileId" value="dev" />
-      <option name="command" value="run --package kumpun-cli --bin kumpun-cli" />
-      <option name="workingDirectory" value="file://$PROJECT_DIR$/@kumpun" />
-      <envs />
-      <option name="emulateTerminal" value="true" />
-      <option name="channel" value="DEFAULT" />
-      <option name="requiredFeatures" value="true" />
-      <option name="allFeatures" value="false" />
-      <option name="withSudo" value="false" />
-      <option name="buildTarget" value="REMOTE" />
-      <option name="backtrace" value="SHORT" />
-      <option name="isRedirectInput" value="false" />
-      <option name="redirectInputPath" value="" />
-      <method v="2">
-        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager">
     <configuration name="Test All" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
       <option name="buildProfileId" value="test" />
       <option name="command" value="test --package kumpun-cli" />
@@ -205,33 +187,9 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Test test_pattern_properties_generation" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
-      <option name="command" value="test --package kumpun-cli --test cli_pattern_properties test_pattern_properties_generation -- --exact" />
-      <option name="workingDirectory" value="file://$PROJECT_DIR$/@kumpun" />
-      <envs />
-      <option name="emulateTerminal" value="true" />
-      <option name="channel" value="DEFAULT" />
-      <option name="requiredFeatures" value="true" />
-      <option name="allFeatures" value="false" />
-      <option name="withSudo" value="false" />
-      <option name="buildTarget" value="REMOTE" />
-      <option name="backtrace" value="SHORT" />
-      <option name="isRedirectInput" value="false" />
-      <option name="redirectInputPath" value="" />
-      <method v="2">
-        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
-      </method>
-    </configuration>
-    <list>
-      <item itemvalue="Cargo.Run kumpun-cli" />
-      <item itemvalue="Cargo.Test test_pattern_properties_generation" />
-      <item itemvalue="Cargo.Test All" />
-    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Cargo.Test All" />
-        <item itemvalue="Cargo.Run kumpun-cli" />
-        <item itemvalue="Cargo.Test test_pattern_properties_generation" />
       </list>
     </recent_temporary>
   </component>

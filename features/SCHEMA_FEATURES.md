@@ -39,7 +39,6 @@
 ## 🔧 Code Output
 - ✅ auto import: `HashMap`
 - ✅ auto import: `use serde::{Deserialize, Serialize}`
-- ✅ auto import: `use validator::Validate` when validation used
 - ✅ generated filenames in `snake_case`
 - ✅ struct field names in `snake_case`
 - ✅ auto-generate `mod.rs` with `pub mod` declarations
@@ -56,7 +55,6 @@
 - [x] Add `examples` to doc comment output
 - [x] Support `definitions` reuse even if used only once
 - [x] Support `patternProperties` grouping + field naming
-- [x] Support `#[validate(...)]` from schema constraints
 - [ ] Generate test stubs or `impl` blocks (future idea)
 - [ ] Support `const`, `default`, and enum fallback values
 
@@ -68,6 +66,6 @@
 - [x] AllOf as flatten struct
 - [x] Nested struct recursion
 - [x] additionalProperties as HashMap
+- [x] patternProperties with intelligent grouping + field naming
 - [x] `$ref` cross-file
 - [x] definitions reuse (even single-use)
-- [x] Runtime validation via `#[validate(...)]` rules
