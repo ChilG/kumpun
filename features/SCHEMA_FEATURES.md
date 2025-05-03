@@ -29,7 +29,8 @@
 ## 🔹 Advanced Schema
 - ✅ `additionalProperties` → `Option<HashMap<String, T>>`
 - ✅ `patternProperties` → grouped by type and merged into named `HashMap<String, T>` fields using `#[serde(flatten)]`
-- ❌ `const` / `default` → not included in output
+- ✅ `const`, `default` → generates `#[serde(default = "...")]` and helper functions
+- ❌ enum fallback (`#[serde(other)]`) → not supported yet
 
 ## 🔹 Metadata Mapping
 - ✅ `description` → generates `///` doc comments for fields, enums, oneOf/anyOf/allOf
@@ -55,8 +56,9 @@
 - [x] Add `examples` to doc comment output
 - [x] Support `definitions` reuse even if used only once
 - [x] Support `patternProperties` grouping + field naming
-- [ ] Generate test stubs or `impl` blocks (future idea)
-- [ ] Support `const`, `default`, and enum fallback values
+- [x] Support `const`, `default` via `#[serde(default = "...")]`
+- [ ] Generate impl blocks or test stubs (optional enhancement)
+- [ ] Support enum fallback variant (`#[serde(other)]`)
 
 ---
 
@@ -69,3 +71,5 @@
 - [x] patternProperties with intelligent grouping + field naming
 - [x] `$ref` cross-file
 - [x] definitions reuse (even single-use)
+- [x] `default` and `const` mapped to helper functions
+- [x] Generated test functions for default value verification

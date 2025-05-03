@@ -1,0 +1,29 @@
+{
+  "$id": "default-const.test",
+  "title": "DefaultConstExample",
+  "description": "Schema with default and const values.",
+  "type": "object",
+  "properties": {
+    "role": {
+      "type": "string",
+      "default": "guest",
+      "description": "User role, default is 'guest'."
+    },
+    "status": {
+      "type": "string",
+      "const": "active",
+      "description": "Status is always 'active'."
+    },
+    "age": {
+      "type": "integer",
+      "default": 18,
+      "description": "Default age is 18."
+    },
+    "is_admin": {
+      "type": "boolean",
+      "default": false,
+      "description": "Indicates if user is admin, default is false."
+    }
+  },
+  "required": ["status"]
+}

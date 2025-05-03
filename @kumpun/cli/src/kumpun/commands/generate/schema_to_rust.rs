@@ -265,6 +265,7 @@ pub fn extract_struct_recursive(
     ctx.visited.insert(name.to_string());
 
     let mut fields = vec![];
+    let mut extra_helpers = vec![];
 
     // ✅ properties
     if let Some(properties) = schema.get("properties") {
@@ -304,6 +305,11 @@ pub fn extract_struct_recursive(
                 if !doc_block.is_empty() {
                     fields.push(doc_block);
                 }
+            }
+
+            if let Some(default_fn) = generate_default_function(key, prop) {
+                fields.push(format!("    #[serde(default = \"{}\")]", default_fn));
+                extra_helpers.push(default_fn_code_string(key, prop));
             }
 
             fields.push(format!("    pub {}: {},", field_name, final_type));
@@ -353,7 +359,11 @@ pub fn extract_struct_recursive(
     struct_lines.push("#[derive(Debug, Serialize, Deserialize)]".to_string());
     struct_lines.push(format!("pub struct {} {{\n{}\n}}", name, fields.join("\n")));
 
-    let struct_code = struct_lines.join("\n");
+    let mut struct_code = struct_lines.join("\n");
+    if !extra_helpers.is_empty() {
+        struct_code.push_str("\n\n");
+        struct_code.push_str(&extra_helpers.join("\n\n"));
+    }
 
     ctx.output.push(NamedStruct {
         name: name.to_string(),
@@ -526,6 +536,52 @@ pub fn infer_rust_type(
             Some("serde_json::Value".to_string())
         }
         _ => Some("serde_json::Value".to_string()),
+    }
+}
+
+fn generate_default_function(field_name: &str, prop: &Value) -> Option<String> {
+    if prop.get("default").is_some() || prop.get("const").is_some() {
+        Some(format!("default_{}", to_snake_case(field_name)))
+    } else {
+        None
+    }
+}
+
+fn default_fn_code_string(field_name: &str, prop: &Value) -> String {
+    let fn_name = format!("default_{}", to_snake_case(field_name));
+    let val = prop.get("default").or_else(|| prop.get("const"));
+
+    let rendered = if let Some(v) = val {
+        match v {
+            Value::String(s) => format!("\"{}\".to_string()", s),
+            Value::Number(n) => n.to_string(),
+            Value::Bool(b) => b.to_string(),
+            _ => "Default::default()".to_string(),
+        }
+    } else {
+        "Default::default()".to_string()
+    };
+
+    format!(
+        "fn {}() -> {} {{\n    {}\n}}",
+        fn_name,
+        rust_type_for_value(val.unwrap_or(&Value::Null)),
+        rendered
+    )
+}
+
+fn rust_type_for_value(v: &Value) -> &str {
+    match v {
+        Value::String(_) => "String",
+        Value::Number(n) => {
+            if n.is_i64() {
+                "i32"
+            } else {
+                "f64"
+            }
+        }
+        Value::Bool(_) => "bool",
+        _ => "&'static str",
     }
 }
 

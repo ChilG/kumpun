@@ -18,11 +18,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="07f3844c-b908-4138-89c2-b79add2c64e8" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/@kumpun/cli/tests/cli_default_const_test.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/@kumpun/cli/tests/fixtures/schemas/default_const_test.schema.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/generate/schema_to_rust.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/generate/schema_to_rust.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/cli_validation_test.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/fixtures/schemas/validation.schema.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/SCHEMA_FEATURES.md" beforeDir="false" afterPath="$PROJECT_DIR$/features/SCHEMA_FEATURES.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,6 +86,7 @@
     "Cargo.Test setup.executor": "Run",
     "Cargo.Test test_cross_file_ref_generation (1).executor": "Run",
     "Cargo.Test test_cross_file_ref_generation.executor": "Run",
+    "Cargo.Test test_default_const.executor": "Run",
     "Cargo.Test test_generate_rust_struct_from_schema (1).executor": "Run",
     "Cargo.Test test_generate_rust_struct_from_schema.executor": "Run",
     "Cargo.Test test_generate_struct_from_everything_schema.executor": "Run",
@@ -100,7 +100,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.rust.reset.selective.auto.import": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/kumpun",
+    "last_opened_file_path": "/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -122,6 +122,7 @@
     "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/src/kumpun/utils/logger.rs": "true",
     "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/EverythingExample.rs": "true",
     "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/cli_generate_ref_croos_files.rs": "true",
+    "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/default_const_test_schema.rs": "true",
     "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/everything.example.rs": "true",
     "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/everything_example.rs": "true",
     "org.rust.disableDetachedFileInspection/Users/chilgoe/Documents/MyProject/kumpun/@kumpun/cli/tests/generated/main.rs": "true",
@@ -151,8 +152,8 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/@kumpun/cli/src/kumpun" />
       <recent name="$PROJECT_DIR$/@kumpun/cli/tests" />
+      <recent name="$PROJECT_DIR$/@kumpun/cli/src/kumpun" />
       <recent name="$PROJECT_DIR$/@kumpun/cli/src" />
       <recent name="$PROJECT_DIR$/@kumpun/cli/tests/fixtures/schemas/shared/gadget" />
       <recent name="$PROJECT_DIR$/@kumpun/cli/src/generated" />
