@@ -313,11 +313,13 @@ pub fn extract_struct_recursive(
     // ✅ patternProperties
     if let Some(patterns) = schema.get("patternProperties") {
         if let Some(pattern_map) = patterns.as_object() {
-            for (i, (pattern, pat_schema)) in pattern_map.iter().enumerate() {
-                let field_name = format!("pattern_{}", i + 1);
+            // Step 1: Group patterns by inferred Rust type
+            let mut pattern_groups: HashMap<String, Vec<(&String, &Value)>> = HashMap::new();
+
+            for (pattern, pat_schema) in pattern_map.iter() {
                 let rust_type = infer_rust_type(
                     pat_schema,
-                    &field_name,
+                    pattern,
                     ctx,
                     definitions,
                     resolver,
@@ -327,8 +329,35 @@ pub fn extract_struct_recursive(
                 )
                 .unwrap_or_else(|| "serde_json::Value".to_string());
 
+                pattern_groups
+                    .entry(rust_type)
+                    .or_default()
+                    .push((pattern, pat_schema));
+            }
+
+            // Step 2: Emit one field per group
+            for (rust_type, entries) in pattern_groups {
+                // Generate a readable field name based on first pattern
+                let name_hint = entries
+                    .first()
+                    .map(|(pat, _)| {
+                        pat.trim_start_matches('^')
+                            .trim_end_matches('_')
+                            .replace(|c: char| !c.is_alphanumeric(), "_")
+                            .to_lowercase()
+                    })
+                    .unwrap_or_else(|| "pattern".to_string());
+
+                let field_name = format!("pattern_{}", name_hint);
+
+                let full_pattern = entries
+                    .iter()
+                    .map(|(pat, _)| pat.to_string())
+                    .collect::<Vec<_>>()
+                    .join("|");
+
                 let doc = if with_docs {
-                    format!("    /// Keys matching pattern: `{}`\n", pattern)
+                    format!("    /// Keys matching pattern: `{}`\n", full_pattern)
                 } else {
                     "".to_string()
                 };
