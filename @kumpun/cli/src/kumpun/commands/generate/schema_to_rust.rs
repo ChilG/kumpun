@@ -182,7 +182,6 @@ pub fn generate_rust_structs_from_schema(
     schema: &Value,
     resolver: &mut RefResolver,
     with_docs: &bool,
-    with_validation: &bool,
 ) -> Vec<NamedStruct> {
     let mut structs = vec![];
     let mut visited = HashSet::new();
@@ -200,7 +199,6 @@ pub fn generate_rust_structs_from_schema(
         resolver,
         None,
         *with_docs,
-        *with_validation,
     );
 
     let mut use_lines = vec![];
@@ -259,7 +257,6 @@ pub fn extract_struct_recursive(
     resolver: &mut RefResolver,
     output_path: Option<String>,
     with_docs: bool,
-    with_validation: bool,
 ) {
     log_debug!("📦 Generated: {} → {:?}", name, output_path);
     if ctx.visited.contains(name) {
@@ -293,7 +290,6 @@ pub fn extract_struct_recursive(
                 resolver,
                 output_path.clone(),
                 with_docs,
-                with_validation,
             )
             .unwrap_or_else(|| "serde_json::Value".to_string());
 
@@ -323,51 +319,21 @@ pub fn extract_struct_recursive(
     // ✅ patternProperties
     if let Some(patterns) = schema.get("patternProperties") {
         if let Some(pattern_map) = patterns.as_object() {
-            // Step 1: Group patterns by inferred Rust type
-            let mut pattern_groups: HashMap<String, Vec<(&String, &Value)>> = HashMap::new();
-
-            for (pattern, pat_schema) in pattern_map.iter() {
+            for (i, (pattern, pat_schema)) in pattern_map.iter().enumerate() {
+                let field_name = format!("pattern_{}", i + 1);
                 let rust_type = infer_rust_type(
                     pat_schema,
-                    pattern,
+                    &field_name,
                     ctx,
                     definitions,
                     resolver,
                     output_path.clone(),
                     with_docs,
-                    with_validation,
                 )
                 .unwrap_or_else(|| "serde_json::Value".to_string());
 
-                pattern_groups
-                    .entry(rust_type)
-                    .or_default()
-                    .push((pattern, pat_schema));
-            }
-
-            // Step 2: Emit one field per group
-            for (rust_type, entries) in pattern_groups {
-                // Generate a readable field name based on first pattern
-                let name_hint = entries
-                    .first()
-                    .map(|(pat, _)| {
-                        pat.trim_start_matches('^')
-                            .trim_end_matches('_')
-                            .replace(|c: char| !c.is_alphanumeric(), "_")
-                            .to_lowercase()
-                    })
-                    .unwrap_or_else(|| "pattern".to_string());
-
-                let field_name = format!("pattern_{}", name_hint);
-
-                let full_pattern = entries
-                    .iter()
-                    .map(|(pat, _)| pat.to_string())
-                    .collect::<Vec<_>>()
-                    .join("|");
-
                 let doc = if with_docs {
-                    format!("    /// Keys matching pattern: `{}`\n", full_pattern)
+                    format!("    /// Keys matching pattern: `{}`\n", pattern)
                 } else {
                     "".to_string()
                 };
@@ -416,7 +382,6 @@ pub fn infer_rust_type(
     resolver: &mut RefResolver,
     output_path: Option<String>,
     with_docs: bool,
-    with_validation: bool,
 ) -> Option<String> {
     log_debug!("🧪 infer_rust_type: key = {}, prop = {}", key, prop);
     if let Some(ref_val) = prop.get("$ref").and_then(|v| v.as_str()) {
@@ -436,7 +401,6 @@ pub fn infer_rust_type(
                 resolver,
                 output_path.clone(),
                 with_docs,
-                with_validation,
             );
             Some(name)
         } else {
@@ -459,7 +423,6 @@ pub fn infer_rust_type(
                 resolver,
                 ref_output_path.clone(),
                 with_docs,
-                with_validation,
             );
             Some(name)
         };
@@ -474,7 +437,6 @@ pub fn infer_rust_type(
             resolver,
             output_path.clone(),
             with_docs,
-            with_validation,
         );
     }
 
@@ -487,7 +449,6 @@ pub fn infer_rust_type(
             resolver,
             output_path.clone(),
             with_docs,
-            with_validation,
         );
     }
 
@@ -500,7 +461,6 @@ pub fn infer_rust_type(
             resolver,
             output_path.clone(),
             with_docs,
-            with_validation,
         );
     }
 
@@ -543,7 +503,6 @@ pub fn infer_rust_type(
                 resolver,
                 output_path.clone(),
                 with_docs,
-                with_validation,
             )?;
             Some(format!("Vec<{}>", inner))
         }
@@ -557,7 +516,6 @@ pub fn infer_rust_type(
                     resolver,
                     output_path.clone(),
                     with_docs,
-                    with_validation,
                 )
                 .unwrap_or_else(|| "serde_json::Value".to_string());
                 return Some(format!("Option<HashMap<String, {}>>", inner_type));
@@ -573,7 +531,6 @@ pub fn infer_rust_type(
                     resolver,
                     output_path.clone(),
                     with_docs,
-                    with_validation,
                 );
                 return Some(sub_name);
             }
@@ -673,7 +630,6 @@ pub fn handle_one_of(
     resolver: &mut RefResolver,
     output_path: Option<String>,
     with_docs: bool,
-    with_validation: bool,
 ) -> Option<String> {
     let enum_name = to_pascal_case(key);
     let mut variants = vec![];
@@ -696,7 +652,6 @@ pub fn handle_one_of(
             resolver,
             output_path.clone(),
             with_docs,
-            with_validation,
         );
 
         if with_docs {
@@ -735,7 +690,6 @@ pub fn handle_any_of(
     resolver: &mut RefResolver,
     output_path: Option<String>,
     with_docs: bool,
-    with_validation: bool,
 ) -> Option<String> {
     let enum_name = to_pascal_case(key);
     let mut variants = vec![];
@@ -751,7 +705,6 @@ pub fn handle_any_of(
             resolver,
             output_path.clone(),
             with_docs,
-            with_validation,
         )
         .unwrap_or_else(|| "serde_json::Value".to_string());
 
@@ -791,7 +744,6 @@ pub fn handle_all_of(
     resolver: &mut RefResolver,
     output_path: Option<String>,
     with_docs: bool,
-    with_validation: bool,
 ) -> Option<String> {
     let main_struct_name = to_pascal_case(key);
     let mut field_lines = vec![];
@@ -814,7 +766,6 @@ pub fn handle_all_of(
             resolver,
             output_path.clone(),
             with_docs,
-            with_validation,
         );
 
         field_lines.push(format!(

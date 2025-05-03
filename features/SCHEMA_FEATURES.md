@@ -29,7 +29,6 @@
 ## 🔹 Advanced Schema
 - ✅ `additionalProperties` → `Option<HashMap<String, T>>`
 - ✅ `patternProperties` → grouped by type and merged into named `HashMap<String, T>` fields using `#[serde(flatten)]`
-- ✅ `format`, `minLength`, `maximum`, `pattern`, etc. → mapped to `#[validate(...)]`
 - ❌ `const` / `default` → not included in output
 
 ## 🔹 Metadata Mapping
@@ -69,7 +68,6 @@
 - [x] AllOf as flatten struct
 - [x] Nested struct recursion
 - [x] additionalProperties as HashMap
-- [x] patternProperties with intelligent grouping + field naming
 - [x] `$ref` cross-file
 - [x] definitions reuse (even single-use)
 - [x] Runtime validation via `#[validate(...)]` rules

@@ -17,32 +17,15 @@ fn test_pattern_properties_generation() {
     assert!(pattern_schema.contains("use std::collections::HashMap;"));
     assert!(pattern_schema.contains(
         r#"
+/// Schema with patternProperties for dynamic keys.
 #[derive(Debug, Serialize, Deserialize)]
-pub struct PatternSchema"#
-    ));
-    assert!(pattern_schema.contains(
-        r#"
+pub struct PatternSchema {
+    /// Keys matching pattern: `^num_`
     #[serde(flatten)]
-    pub pattern_mixed: Option<HashMap<String, String>>"#
-    ));
-    assert!(pattern_schema.contains(
-        r#"
+    pub pattern_1: Option<HashMap<String, f64>>,
+    /// Keys matching pattern: `^str_`
     #[serde(flatten)]
-    pub pattern_int: Option<HashMap<String, i32>>"#
-    ));
-    assert!(pattern_schema.contains(
-        r#"
-    #[serde(flatten)]
-    pub pattern_json: Option<HashMap<String, serde_json::Value>>"#
-    ));
-    assert!(pattern_schema.contains(
-        r#"
-    #[serde(flatten)]
-    pub pattern_flag: Option<HashMap<String, bool>>"#
-    ));
-    assert!(pattern_schema.contains(
-        r#"
-    #[serde(flatten)]
-    pub pattern_num1: Option<HashMap<String, f64>>"#
+    pub pattern_2: Option<HashMap<String, String>>,
+}"#
     ));
 }
