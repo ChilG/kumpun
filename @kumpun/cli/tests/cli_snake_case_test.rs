@@ -5,7 +5,7 @@ mod setup;
 fn test_snake_case_filename_and_fields() {
     let mut schemas: Vec<&str> = vec![];
     schemas.push("everything.example");
-    setup::run_generate(schemas, &[]);
+    setup::run_generate("cli_snake_case_test", schemas, &[]);
 
     assert!(std::path::Path::new("tests/generated/everything_example.rs").exists());
 

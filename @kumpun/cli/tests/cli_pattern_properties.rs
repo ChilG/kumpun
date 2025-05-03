@@ -5,7 +5,7 @@ mod setup;
 fn test_pattern_properties_generation() {
     let mut schemas: Vec<&str> = vec![];
     schemas.push("pattern.schema");
-    setup::run_generate(schemas, &["--with-docs"]);
+    setup::run_generate("cli_pattern_properties", schemas, &["--with-docs"]);
 
     assert!(std::path::Path::new("tests/generated/mod.rs").exists());
     let root_mod = common::read("tests/generated/mod.rs");

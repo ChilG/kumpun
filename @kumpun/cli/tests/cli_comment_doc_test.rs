@@ -5,7 +5,7 @@ mod setup;
 fn test_struct_field_doc_comments_are_generated() {
     let mut schemas: Vec<&str> = vec![];
     schemas.push("everything.example");
-    setup::run_generate(schemas, &["--with-docs"]);
+    setup::run_generate("cli_comment_doc_test", schemas, &["--with-docs"]);
 
     let content = common::read("tests/generated/everything_example.rs");
 

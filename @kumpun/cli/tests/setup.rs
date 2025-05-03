@@ -2,7 +2,7 @@ use assert_cmd::Command;
 use chrono::Local;
 use std::{fs, io::Write, path::PathBuf};
 
-pub fn run_generate(schemas: Vec<&str>, extra_args: &[&str]) {
+pub fn run_generate(name: &str, schemas: Vec<&str>, extra_args: &[&str]) {
     let _ = fs::remove_dir_all("tests/generated");
     fs::create_dir_all("tests/generated").unwrap();
 
@@ -25,7 +25,7 @@ pub fn run_generate(schemas: Vec<&str>, extra_args: &[&str]) {
         ];
 
         let timestamp = Local::now().format("%Y%m%d-%H%M%S");
-        let log_path = log_dir.join(format!("{}-{}.log", schema, timestamp));
+        let log_path = log_dir.join(format!("{}-{}-{}.log", name, schema, timestamp));
 
         let mut log_file = fs::File::create(&log_path).expect("Failed to create log file");
 

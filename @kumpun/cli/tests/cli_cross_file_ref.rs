@@ -5,7 +5,7 @@ mod setup;
 fn test_cross_file_ref_generation() {
     let mut schemas: Vec<&str> = vec![];
     schemas.push("main.schema");
-    setup::run_generate(schemas, &[]);
+    setup::run_generate("cli_cross_file_ref", schemas, &[]);
 
     let content = common::read("tests/generated/main_schema.rs");
     assert!(content.contains("use serde::{Deserialize, Serialize};"));

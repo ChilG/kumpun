@@ -28,5 +28,8 @@ pub enum Commands {
 
         #[arg(long)]
         with_docs: bool,
+
+        #[arg(long)]
+        with_validation: bool,
     },
 }

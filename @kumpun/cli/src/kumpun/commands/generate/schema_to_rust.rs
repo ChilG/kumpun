@@ -178,6 +178,7 @@ pub fn generate_rust_structs_from_schema(
     schema: &Value,
     resolver: &mut RefResolver,
     with_docs: &bool,
+    with_validation: &bool,
 ) -> Vec<NamedStruct> {
     let mut structs = vec![];
     let mut visited = HashSet::new();
@@ -195,6 +196,7 @@ pub fn generate_rust_structs_from_schema(
         resolver,
         None,
         *with_docs,
+        *with_validation,
     );
 
     let mut use_lines = vec![];
@@ -253,6 +255,7 @@ pub fn extract_struct_recursive(
     resolver: &mut RefResolver,
     output_path: Option<String>,
     with_docs: bool,
+    with_validation: bool,
 ) {
     log_debug!("📦 Generated: {} → {:?}", name, output_path);
     if ctx.visited.contains(name) {
@@ -286,6 +289,7 @@ pub fn extract_struct_recursive(
                 resolver,
                 output_path.clone(),
                 with_docs,
+                with_validation,
             )
             .unwrap_or_else(|| "serde_json::Value".to_string());
 
@@ -319,6 +323,7 @@ pub fn extract_struct_recursive(
                     resolver,
                     output_path.clone(),
                     with_docs,
+                    with_validation,
                 )
                 .unwrap_or_else(|| "serde_json::Value".to_string());
 
@@ -370,6 +375,7 @@ pub fn infer_rust_type(
     resolver: &mut RefResolver,
     output_path: Option<String>,
     with_docs: bool,
+    with_validation: bool,
 ) -> Option<String> {
     log_debug!("🧪 infer_rust_type: key = {}, prop = {}", key, prop);
     if let Some(ref_val) = prop.get("$ref").and_then(|v| v.as_str()) {
@@ -389,6 +395,7 @@ pub fn infer_rust_type(
                 resolver,
                 output_path.clone(),
                 with_docs,
+                with_validation,
             );
             Some(name)
         } else {
@@ -411,6 +418,7 @@ pub fn infer_rust_type(
                 resolver,
                 ref_output_path.clone(),
                 with_docs,
+                with_validation,
             );
             Some(name)
         };
@@ -425,6 +433,7 @@ pub fn infer_rust_type(
             resolver,
             output_path.clone(),
             with_docs,
+            with_validation,
         );
     }
 
@@ -437,6 +446,7 @@ pub fn infer_rust_type(
             resolver,
             output_path.clone(),
             with_docs,
+            with_validation,
         );
     }
 
@@ -449,6 +459,7 @@ pub fn infer_rust_type(
             resolver,
             output_path.clone(),
             with_docs,
+            with_validation,
         );
     }
 
@@ -491,6 +502,7 @@ pub fn infer_rust_type(
                 resolver,
                 output_path.clone(),
                 with_docs,
+                with_validation,
             )?;
             Some(format!("Vec<{}>", inner))
         }
@@ -504,6 +516,7 @@ pub fn infer_rust_type(
                     resolver,
                     output_path.clone(),
                     with_docs,
+                    with_validation,
                 )
                 .unwrap_or_else(|| "serde_json::Value".to_string());
                 return Some(format!("Option<HashMap<String, {}>>", inner_type));
@@ -519,6 +532,7 @@ pub fn infer_rust_type(
                     resolver,
                     output_path.clone(),
                     with_docs,
+                    with_validation,
                 );
                 return Some(sub_name);
             }
@@ -569,6 +583,7 @@ pub fn handle_one_of(
     resolver: &mut RefResolver,
     output_path: Option<String>,
     with_docs: bool,
+    with_validation: bool,
 ) -> Option<String> {
     let enum_name = to_pascal_case(key);
     let mut variants = vec![];
@@ -591,6 +606,7 @@ pub fn handle_one_of(
             resolver,
             output_path.clone(),
             with_docs,
+            with_validation,
         );
 
         if with_docs {
@@ -629,6 +645,7 @@ pub fn handle_any_of(
     resolver: &mut RefResolver,
     output_path: Option<String>,
     with_docs: bool,
+    with_validation: bool,
 ) -> Option<String> {
     let enum_name = to_pascal_case(key);
     let mut variants = vec![];
@@ -644,6 +661,7 @@ pub fn handle_any_of(
             resolver,
             output_path.clone(),
             with_docs,
+            with_validation,
         )
         .unwrap_or_else(|| "serde_json::Value".to_string());
 
@@ -683,6 +701,7 @@ pub fn handle_all_of(
     resolver: &mut RefResolver,
     output_path: Option<String>,
     with_docs: bool,
+    with_validation: bool,
 ) -> Option<String> {
     let main_struct_name = to_pascal_case(key);
     let mut field_lines = vec![];
@@ -705,6 +724,7 @@ pub fn handle_all_of(
             resolver,
             output_path.clone(),
             with_docs,
+            with_validation,
         );
 
         field_lines.push(format!(

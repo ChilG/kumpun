@@ -19,7 +19,18 @@
   <component name="ChangeListManager">
     <list default="true" id="07f3844c-b908-4138-89c2-b79add2c64e8" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/args/cli.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/args/cli.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/generate.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/generate.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/generate/schema_to_rust.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/generate/schema_to_rust.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/cli_comment_doc_test.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/tests/cli_comment_doc_test.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/cli_cross_file_ref.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/tests/cli_cross_file_ref.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/cli_everything.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/tests/cli_everything.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/cli_mod_rs_test.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/tests/cli_mod_rs_test.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/cli_pattern_properties.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/tests/cli_pattern_properties.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/cli_serde_use_test.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/tests/cli_serde_use_test.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/cli_simple.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/tests/cli_simple.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/cli_snake_case_test.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/tests/cli_snake_case_test.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/setup.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/tests/setup.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
