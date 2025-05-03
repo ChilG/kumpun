@@ -2,31 +2,15 @@
   "$id": "pattern.test",
   "type": "object",
   "title": "PatternExample",
-  "description": "Schema with various patternProperties cases.",
+  "description": "Schema with patternProperties for dynamic keys.",
   "patternProperties": {
-    "^str1_": {
+    "^str_": {
       "type": "string",
-      "description": "basic string"
+      "description": "String value with 'str_' prefix."
     },
-    "^str2_": {
-      "type": "string",
-      "description": "basic string"
-    },
-    "^num1_": {
-      "type": "number"
-    },
-    "^int_": {
-      "type": "integer"
-    },
-    "^mixed_": {
-      "type": "string",
-      "minLength": 5
-    },
-    "^flag_": {
-      "type": "boolean"
-    },
-    "^json_": {
-      "type": "object"
+    "^num_": {
+      "type": "number",
+      "description": "Number value with 'num_' prefix."
     }
   }
 }

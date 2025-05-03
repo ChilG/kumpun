@@ -28,7 +28,7 @@
 
 ## 🔹 Advanced Schema
 - ✅ `additionalProperties` → `Option<HashMap<String, T>>`
-- ✅ `patternProperties` → grouped by type and merged into named `HashMap<String, T>` fields using `#[serde(flatten)]`
+- ❌ `patternProperties` → not yet supported
 - ❌ `const` / `default` → not included in output
 - 🔜 `format`, `minLength`, etc. → can be added with `#[validate]` later
 
@@ -55,7 +55,7 @@
 - [x] Annotate doc/comments from `description`
 - [x] Add `examples` to doc comment output
 - [x] Support `definitions` reuse even if used only once
-- [x] Support `patternProperties` grouping + naming
+- [ ] Support `patternProperties` → `HashMap` + regex
 - [ ] Generate test stubs or `impl` blocks (future idea)
 
 ---
@@ -66,6 +66,5 @@
 - [x] AllOf as flatten struct
 - [x] Nested struct recursion
 - [x] additionalProperties as HashMap
-- [x] patternProperties with intelligent grouping + field naming
 - [x] `$ref` cross-file
 - [x] definitions reuse (even single-use)
