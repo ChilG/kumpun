@@ -30,7 +30,7 @@ pub fn run_generate(schemas: Vec<&str>, extra_args: &[&str]) {
         let mut log_file = fs::File::create(&log_path).expect("Failed to create log file");
 
         let output = cmd
-            .env("RUST_LOG", "debug")
+            .env("RUST_LOG", "debug,error")
             .args(base_args.iter().chain(extra_args.iter()))
             .output() // ✅ ใช้ get_output() จาก assert_cmd
             .expect("Failed to run command");

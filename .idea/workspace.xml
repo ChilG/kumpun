@@ -18,23 +18,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="07f3844c-b908-4138-89c2-b79add2c64e8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/utils.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/utils/logger.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/kumpun.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kumpun.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/Cargo.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/check.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/check.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/dev.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/dev.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/docs.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/docs.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/generate.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/generate.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/generate/schema_to_rust.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/commands/generate/schema_to_rust.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/src/kumpun/mod.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/@kumpun/cli/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/src/main.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/@kumpun/cli/tests/setup.rs" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/cli/tests/setup.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/core/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/core/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/@kumpun/schema/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/@kumpun/schema/Cargo.toml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -180,7 +166,25 @@
   <component name="RsExternalLinterProjectSettings">
     <option name="runOnTheFly" value="true" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Cargo.Test All">
+    <configuration name="Run kumpun-cli" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="buildProfileId" value="dev" />
+      <option name="command" value="run --package kumpun-cli --bin kumpun-cli" />
+      <option name="workingDirectory" value="file://$PROJECT_DIR$/@kumpun" />
+      <envs />
+      <option name="emulateTerminal" value="true" />
+      <option name="channel" value="DEFAULT" />
+      <option name="requiredFeatures" value="true" />
+      <option name="allFeatures" value="false" />
+      <option name="withSudo" value="false" />
+      <option name="buildTarget" value="REMOTE" />
+      <option name="backtrace" value="SHORT" />
+      <option name="isRedirectInput" value="false" />
+      <option name="redirectInputPath" value="" />
+      <method v="2">
+        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Test All" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
       <option name="buildProfileId" value="test" />
       <option name="command" value="test --package kumpun-cli" />
@@ -199,9 +203,33 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Test test_pattern_properties_generation" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="command" value="test --package kumpun-cli --test cli_pattern_properties test_pattern_properties_generation -- --exact" />
+      <option name="workingDirectory" value="file://$PROJECT_DIR$/@kumpun" />
+      <envs />
+      <option name="emulateTerminal" value="true" />
+      <option name="channel" value="DEFAULT" />
+      <option name="requiredFeatures" value="true" />
+      <option name="allFeatures" value="false" />
+      <option name="withSudo" value="false" />
+      <option name="buildTarget" value="REMOTE" />
+      <option name="backtrace" value="SHORT" />
+      <option name="isRedirectInput" value="false" />
+      <option name="redirectInputPath" value="" />
+      <method v="2">
+        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Cargo.Run kumpun-cli" />
+      <item itemvalue="Cargo.Test test_pattern_properties_generation" />
+      <item itemvalue="Cargo.Test All" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Cargo.Test All" />
+        <item itemvalue="Cargo.Run kumpun-cli" />
+        <item itemvalue="Cargo.Test test_pattern_properties_generation" />
         <item itemvalue="Cargo.Test cli_everything" />
       </list>
     </recent_temporary>
