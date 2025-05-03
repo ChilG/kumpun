@@ -1,2 +1,3 @@
 @kumpun/target/
 @kumpun/cli/tests/generated/
+@kumpun/cli/.tmp/

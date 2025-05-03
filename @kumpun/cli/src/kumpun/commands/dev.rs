@@ -1,8 +1,10 @@
+use crate::log_debug;
+
 pub fn init() {
-    println!("🚀 [dev] mock server module initialized");
+    log_debug!("🚀 [dev] mock server module initialized");
 }
 
 pub fn run() {
-    println!("🚀 Starting dev server...");
+    log_debug!("🚀 Starting dev server...");
     // TODO: Implement server startup
 }

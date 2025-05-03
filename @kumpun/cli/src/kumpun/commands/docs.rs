@@ -1,8 +1,10 @@
+use crate::log_debug;
+
 pub fn init() {
-    println!("📄 [docs] docs generator module initialized");
+    log_debug!("📄 [docs] docs generator module initialized");
 }
 
 pub fn run() {
-    println!("📄 Generating documentation...");
+    log_debug!("📄 Generating documentation...");
     // TODO: Implement docs generation
 }

@@ -8,6 +8,8 @@
       <sourceFolder url="file://$MODULE_DIR$/@kumpun/schema/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/@kumpun/target" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
+      <excludeFolder url="file://$MODULE_DIR$/@kumpun/cli/.tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/@kumpun/cli/tests/generated" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

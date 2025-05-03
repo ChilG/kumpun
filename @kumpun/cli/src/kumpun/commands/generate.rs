@@ -1,33 +1,35 @@
 pub mod schema_to_rust;
 
+use crate::{log_debug, log_error};
+use schema_to_rust::RefResolver;
 use schema_to_rust::generate_rust_structs_from_schema;
 use schema_to_rust::to_pascal_case;
 use schema_to_rust::write_named_structs;
-use schema_to_rust::RefResolver;
 use std::fs;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 
 pub fn init() {
-    println!("🛠️ [generate] stub generator module initialized");
+    log_debug!("🛠️ [generate] stub generator module initialized");
 }
 
 pub fn run(schema: &str, target: &str, schema_dir: &str, out_dir: &str, with_docs: &bool) {
-    println!(
+    log_debug!(
         "🛠️ Generating for schema: '{}', target: '{}'",
-        schema, target
+        schema,
+        target
     );
 
     let schema_path = build_schema_path(schema_dir, schema);
     if !schema_path.exists() {
-        eprintln!("❌ Schema file not found: {}", schema_path.display());
+        log_error!("❌ Schema file not found: {}", schema_path.display());
         std::process::exit(1);
     }
 
     let schema_str = match fs::read_to_string(&schema_path) {
         Ok(content) => content,
         Err(e) => {
-            eprintln!("❌ Failed to read schema: {}", e);
+            log_error!("❌ Failed to read schema: {}", e);
             std::process::exit(1);
         }
     };
@@ -36,7 +38,7 @@ pub fn run(schema: &str, target: &str, schema_dir: &str, out_dir: &str, with_doc
         "typescript" => generate_typescript_stub(schema, &schema_str, out_dir),
         "rust" => generate_rust_stub(schema, schema_dir, &schema_str, out_dir, with_docs),
         _ => {
-            eprintln!("❌ Unsupported target: {}", target);
+            log_error!("❌ Unsupported target: {}", target);
             std::process::exit(1);
         }
     }
@@ -55,7 +57,7 @@ fn write_to_file(schema_name: &str, ext: &str, content: &str, out_dir: &str) {
     let mut file = fs::File::create(&out_path).expect("Failed to write file");
     file.write_all(content.as_bytes()).expect("Write failed");
 
-    println!("✅ Stub generated: {}", out_path.display());
+    log_debug!("✅ Stub generated: {}", out_path.display());
 }
 
 fn generate_typescript_stub(schema_name: &str, _schema: &str, out_dir: &str) {

@@ -10,9 +10,9 @@ fn main() {
     commands::init_all();
 
     match &cli.command {
-        Commands::Dev => kumpun::commands::dev::run(),
-        Commands::Check => kumpun::commands::check::run(),
-        Commands::Docs => kumpun::commands::docs::run(),
+        Commands::Dev => commands::dev::run(),
+        Commands::Check => commands::check::run(),
+        Commands::Docs => commands::docs::run(),
         Commands::Generate {
             schema,
             target,

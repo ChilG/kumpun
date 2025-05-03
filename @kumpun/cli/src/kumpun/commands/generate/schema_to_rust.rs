@@ -1,3 +1,4 @@
+use crate::log_debug;
 use serde_json::Value;
 use std::collections::HashMap;
 use std::collections::HashSet;
@@ -36,7 +37,7 @@ impl RefResolver {
         let pointer = parts.get(1).map(|s| *s).unwrap_or("");
 
         let full_path = self.base_path.join(file_path);
-        println!("📂 Looking for: {}", full_path.display());
+        log_debug!("📂 Looking for: {}", full_path.display());
 
         let content = if let Some(cached) = self.cache.get(file_path) {
             cached.clone()
@@ -85,7 +86,7 @@ pub fn write_named_structs(structs: &[NamedStruct], out_dir: &str, root_name: &s
     let mut root_needs_serde = false;
 
     for s in structs {
-        println!("🧾 writing {} → {:?}", s.name, s.output_path);
+        log_debug!("🧾 writing {} → {:?}", s.name, s.output_path);
         match &s.output_path {
             Some(path_hint) => {
                 let snake_case_path = to_snake_case(path_hint);
@@ -102,7 +103,7 @@ pub fn write_named_structs(structs: &[NamedStruct], out_dir: &str, root_name: &s
                 };
 
                 file.write_all(code.as_bytes()).expect("Write failed");
-                println!("✅ Generated: {}", full_path.display());
+                log_debug!("✅ Generated: {}", full_path.display());
             }
             None => {
                 if s.code.contains("Serialize") || s.code.contains("Deserialize") {
@@ -128,7 +129,7 @@ pub fn write_named_structs(structs: &[NamedStruct], out_dir: &str, root_name: &s
     file.write_all(joined.as_bytes())
         .expect("Root write failed");
 
-    println!("✅ Stub generated: {}", full_path.display());
+    log_debug!("✅ Stub generated: {}", full_path.display());
 
     // 🔧 NEW: Generate mod.rs files for all subfolders
     generate_mod_rs_recursively(Path::new(out_dir)).expect("Failed to generate mod.rs files");
@@ -167,7 +168,7 @@ fn generate_mod_rs_recursively(dir: &Path) -> std::io::Result<()> {
     let mod_path = dir.join("mod.rs");
     let content = mod_lines.join("\n") + "\n";
     fs::write(&mod_path, content)?;
-    println!("📦 mod.rs generated: {}", mod_path.display());
+    log_debug!("📦 mod.rs generated: {}", mod_path.display());
 
     Ok(())
 }
@@ -237,7 +238,7 @@ pub fn generate_rust_structs_from_schema(
     }
 
     for s in &mut *ctx.output {
-        println!("🧾 {} → {:?}", s.name, s.output_path);
+        log_debug!("🧾 {} → {:?}", s.name, s.output_path);
     }
 
     ctx.output.to_vec()
@@ -253,7 +254,7 @@ pub fn extract_struct_recursive(
     output_path: Option<String>,
     with_docs: bool,
 ) {
-    println!("📦 Generated: {} → {:?}", name, output_path);
+    log_debug!("📦 Generated: {} → {:?}", name, output_path);
     if ctx.visited.contains(name) {
         return;
     }
@@ -370,7 +371,7 @@ pub fn infer_rust_type(
     output_path: Option<String>,
     with_docs: bool,
 ) -> Option<String> {
-    println!("🧪 infer_rust_type: key = {}, prop = {}", key, prop);
+    log_debug!("🧪 infer_rust_type: key = {}, prop = {}", key, prop);
     if let Some(ref_val) = prop.get("$ref").and_then(|v| v.as_str()) {
         return if ref_val.starts_with("#/") {
             let name = ref_val.split('/').last()?.to_string();
@@ -392,7 +393,7 @@ pub fn infer_rust_type(
             Some(name)
         } else {
             let resolved = resolver.resolve(ref_val)?;
-            println!("🧩 RESOLVED: {} → {}", ref_val, resolved);
+            log_debug!("🧩 RESOLVED: {} → {}", ref_val, resolved);
             let name = to_pascal_case(Path::new(ref_val).file_stem()?.to_str()?);
             if ctx.generated_defs.contains(&name) {
                 return Some(name);

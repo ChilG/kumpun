@@ -1,8 +1,10 @@
+use crate::log_debug;
+
 pub fn init() {
-    println!("✅ [check] module initialized");
+    log_debug!("✅ [check] module initialized");
 }
 
 pub fn run() {
-    println!("🔎 Checking schema validity...");
+    log_debug!("🔎 Checking schema validity...");
     // TODO: Implement validation logic
 }
