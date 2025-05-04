@@ -30,12 +30,13 @@
 - ✅ `additionalProperties` → `Option<HashMap<String, T>>`
 - ✅ `patternProperties` → grouped by type and merged into named `HashMap<String, T>` fields using `#[serde(flatten)]`
 - ✅ `const`, `default` → generates `#[serde(default = "...")]` and helper functions
+- 🔜 `type: [T1, T2]` (multi-type) → not fully resolved yet
 - ❌ enum fallback (`#[serde(other)]`) → not supported yet
 
 ## 🔹 Metadata Mapping
-- ✅ `description` → generates `///` doc comments for fields, enums, oneOf/anyOf/allOf
-- ✅ `examples` → rendered as inline `/// Example: ...` (with `description`)
-- ❌ `title` → not used (fallback only for missing description)
+- ✅ `description` → generates `///` doc comments
+- ✅ `examples` → rendered as `/// Example: ...`
+- ❌ `title` → not used directly
 
 ## 🔧 Code Output
 - ✅ auto import: `HashMap`
@@ -44,21 +45,17 @@
 - ✅ struct field names in `snake_case`
 - ✅ auto-generate `mod.rs` with `pub mod` declarations
 - ✅ root `use` paths prefixed with `crate::generated::...`
+- ✅ escape reserved words (e.g. `type`, `enum`, `const`, `$ref`, `if`, `else`, etc.) using `#[serde(rename = "...")]`
 - ❌ auto import: `chrono`, `uuid`, etc.
 
 ## 🧪 Next Steps
-- [x] Implement `RefResolver` for cross-file `$ref`
-- [x] Generate `mod.rs` recursively
-- [x] Prefix `crate::generated::...` for imports
-- [x] Convert filenames and fields to `snake_case`
-- [x] Insert `use serde::{Deserialize, Serialize}` when required
-- [x] Annotate doc/comments from `description`
-- [x] Add `examples` to doc comment output
-- [x] Support `definitions` reuse even if used only once
-- [x] Support `patternProperties` grouping + field naming
-- [x] Support `const`, `default` via `#[serde(default = "...")]`
-- [ ] Generate impl blocks or test stubs (optional enhancement)
-- [ ] Support enum fallback variant (`#[serde(other)]`)
+- [x] Add `$`-prefixed keyword escaping and `serde(rename = "...")`
+- [x] Test with official schemas from json-schema.org
+- [x] Generate helper functions for default/const
+- [ ] Handle `type: [T1, T2]` array typing safely
+- [ ] Improve support for Draft 2019-09 & 2020-12 new keywords (e.g. `examples`, `unevaluatedProperties`, `dependentSchemas`, etc.)
+- [ ] Add enum fallback variant (`#[serde(other)]`)
+- [ ] Optional: generate impl blocks or test stubs for validation and schema examples
 
 ---
 
@@ -68,8 +65,9 @@
 - [x] AllOf as flatten struct
 - [x] Nested struct recursion
 - [x] additionalProperties as HashMap
-- [x] patternProperties with intelligent grouping + field naming
-- [x] `$ref` cross-file
+- [x] patternProperties with type grouping and naming
+- [x] `$ref` cross-file support
+- [x] `$` keyword handling with renaming
 - [x] definitions reuse (even single-use)
 - [x] `default` and `const` mapped to helper functions
-- [x] Generated test functions for default value verification
+- [x] Full compile pass for draft 04/06/07/2019-09/2020-12

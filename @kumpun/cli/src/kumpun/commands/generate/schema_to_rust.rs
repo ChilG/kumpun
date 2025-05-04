@@ -190,6 +190,23 @@ pub fn generate_rust_structs_from_schema(
 
     let mut ctx = GeneratorContext::new(&mut structs, &mut visited, &mut generated_defs);
 
+    // if let Some(def_map) = definitions.as_object() {
+    //     for (name, def_schema) in def_map {
+    //         if !ctx.generated_defs.contains(name) {
+    //             extract_struct_recursive(
+    //                 &to_pascal_case(name),
+    //                 def_schema,
+    //                 &mut ctx,
+    //                 format!("#/definitions/{}", name),
+    //                 &Value::Null,
+    //                 resolver,
+    //                 Some(name.clone()),
+    //                 *with_docs,
+    //             );
+    //         }
+    //     }
+    // }
+
     extract_struct_recursive(
         root_name,
         schema,
@@ -248,6 +265,45 @@ pub fn generate_rust_structs_from_schema(
     ctx.output.to_vec()
 }
 
+fn reserved_keywords() -> HashSet<&'static str> {
+    [
+        // Strict keywords
+        "as", "break", "const", "continue", "crate", "else", "enum", "extern", "false", "fn", "for",
+        "if", "impl", "in", "let", "loop", "match", "mod", "move", "mut", "pub", "ref", "return",
+        "self", "Self", "static", "struct", "super", "trait", "true", "type", "unsafe", "use",
+        "where", "while", // Reserved for future use
+        "abstract", "become", "box", "do", "final", "macro", "override", "priv", "typeof",
+        "unsized", "virtual", "yield", "try", // Edition-specific
+        "async", "await", "dyn", // Some internal / contextual identifiers
+        "union",
+    ]
+    .into_iter()
+    .collect()
+}
+
+fn sanitize_field_name(original: &str) -> (String, Option<String>) {
+    let reserved_keywords = reserved_keywords();
+
+    // Case: starts with $
+    if original.starts_with('$') {
+        let base = &original[1..];
+        let field_name = if reserved_keywords.contains(base) {
+            format!("r#{}", base) // หรือ base.to_owned() + "_" ถ้าไม่อยากใช้ raw identifiers
+        } else {
+            to_snake_case(base)
+        };
+        return (field_name, Some(original.to_string()));
+    }
+
+    // Case: regular keyword
+    if reserved_keywords.contains(original) {
+        return (format!("r#{}", original), Some(original.to_string()));
+    }
+
+    // Normal case
+    (to_snake_case(original), None)
+}
+
 pub fn extract_struct_recursive(
     name: &str,
     schema: &Value,
@@ -280,7 +336,10 @@ pub fn extract_struct_recursive(
             .unwrap_or_default();
 
         for (key, prop) in properties.as_object().unwrap() {
-            let field_name = to_snake_case(key);
+            let (field_name, rename_attr) = sanitize_field_name(key);
+            if let Some(rename) = rename_attr {
+                fields.push(format!("    #[serde(rename = \"{}\")]", rename));
+            }
             let is_required = required.contains(key.as_str());
 
             let rust_type = infer_rust_type(

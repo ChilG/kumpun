@@ -5,7 +5,7 @@ mod setup;
 fn test_generate_struct_from_everything_schema() {
     let mut schemas: Vec<&str> = vec![];
     schemas.push("everything.example");
-    setup::run_generate("cli_everything", schemas, &[]);
+    setup::run_generate("cli_everything", schemas, &["--with-docs"]);
 
     assert!(std::path::Path::new("tests/generated/everything_example.rs").exists());
     let content = common::read("tests/generated/everything_example.rs");

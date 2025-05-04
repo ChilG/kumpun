@@ -319,6 +319,7 @@ dependencies = [
  "kumpun-schema",
  "log",
  "once_cell",
+ "serde",
  "serde_json",
 ]
 
